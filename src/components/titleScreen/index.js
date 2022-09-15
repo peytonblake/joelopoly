@@ -1,12 +1,23 @@
 import React from 'react';
-import { TitleContainer, TitleText } from './titleScreen';
+import {
+  TitleScreenContainer,
+  TitleContainer,
+  TitleText,
+  ButtonWrapper,
+} from './titleScreen';
+import { Button } from '../button';
 
 const TitleScreen = () => {
   return (
     <>
-      <TitleContainer>
-        <TitleText>JOELOPOLY</TitleText>
-      </TitleContainer>
+      <TitleScreenContainer>
+        <TitleContainer>
+          <TitleText>JOELOPOLY</TitleText>
+        </TitleContainer>
+        <ButtonWrapper>
+          <Button>START</Button>
+        </ButtonWrapper>
+      </TitleScreenContainer>
     </>
   );
 };

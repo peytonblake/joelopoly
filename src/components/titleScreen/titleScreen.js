@@ -1,11 +1,16 @@
 import styled from 'styled-components';
 
-export const TitleContainer = styled.div`
+export const TitleScreenContainer = styled.div`
   background: #2c3325;
+  height: 100vh;
   display: flex;
   justify-content: center;
-  position: sticky;
-  height: 100vh;
+`;
+
+export const TitleContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  position: absolute;
 `;
 
 export const TitleText = styled.h1`
@@ -16,4 +21,14 @@ export const TitleText = styled.h1`
   font-size: 8rem;
   position: relative;
   margin-top: 20vh;
+`;
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  position: absolute;
+  margin-top: 70vh;
+  height: 10vh;
+  font-weight: bold;
 `;
