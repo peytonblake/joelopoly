@@ -15,7 +15,7 @@ const TitleScreen = () => {
           <TitleText>JOELOPOLY</TitleText>
         </TitleContainer>
         <ButtonWrapper>
-          <Button>START</Button>
+          <Button to="/">START</Button>
         </ButtonWrapper>
       </TitleScreenContainer>
     </>
