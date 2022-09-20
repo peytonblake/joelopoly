@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   TitleScreenContainer,
   TitleContainer,
@@ -10,6 +10,21 @@ import {
 } from './titleScreen';
 import { Button } from '../button';
 
+const types = ['1', '2', '3', '4'];
+function ToggleGroup() {
+  const [active, setActive] = useState(types[0]);
+  return (
+    <PlayerWrapper>
+      <PlayerText>PLAYERS</PlayerText>
+      {types.map((type) => (
+        <PlayerButton onClick={() => setActive(type)} active={active === type}>
+          {type}
+        </PlayerButton>
+      ))}
+    </PlayerWrapper>
+  );
+}
+
 const TitleScreen = () => {
   return (
     <>
@@ -17,13 +32,7 @@ const TitleScreen = () => {
         <TitleContainer>
           <TitleText>JOELOPOLY</TitleText>
         </TitleContainer>
-        <PlayerWrapper>
-          <PlayerText>PLAYERS</PlayerText>
-          <PlayerButton>1</PlayerButton>
-          <PlayerButton>2</PlayerButton>
-          <PlayerButton>3</PlayerButton>
-          <PlayerButton>4</PlayerButton>
-        </PlayerWrapper>
+        <ToggleGroup />
         <ButtonWrapper>
           <Button>START</Button>
         </ButtonWrapper>

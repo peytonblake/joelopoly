@@ -44,7 +44,7 @@ export const PlayerText = styled.h1`
 `;
 
 export const PlayerButton = styled.button`
-  background-color: grey;
+  background-color: ${({ active }) => (active ? 'green' : 'grey')};
   color: #fef9f3;
   padding: 10px 10px;
   font-size: 20px;
