@@ -7,7 +7,7 @@ import {
   PlayerWrapper,
   PlayerText,
   PlayerButton,
-} from './titleScreen';
+} from './title';
 import { Button } from '../button';
 
 const types = ['1', '2', '3', '4'];
@@ -25,7 +25,7 @@ function ToggleGroup() {
   );
 }
 
-const TitleScreen = () => {
+const Title = () => {
   return (
     <>
       <TitleScreenContainer>
@@ -34,11 +34,11 @@ const TitleScreen = () => {
         </TitleContainer>
         <ToggleGroup />
         <ButtonWrapper>
-          <Button to="/">START</Button>
+          <Button to="/color">START</Button>
         </ButtonWrapper>
       </TitleScreenContainer>
     </>
   );
 };
 
-export default TitleScreen;
+export default Title;
