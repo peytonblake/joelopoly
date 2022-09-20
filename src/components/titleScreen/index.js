@@ -4,6 +4,9 @@ import {
   TitleContainer,
   TitleText,
   ButtonWrapper,
+  PlayerWrapper,
+  PlayerText,
+  PlayerButton,
 } from './titleScreen';
 import { Button } from '../button';
 
@@ -14,6 +17,13 @@ const TitleScreen = () => {
         <TitleContainer>
           <TitleText>JOELOPOLY</TitleText>
         </TitleContainer>
+        <PlayerWrapper>
+          <PlayerText>PLAYERS</PlayerText>
+          <PlayerButton>1</PlayerButton>
+          <PlayerButton>2</PlayerButton>
+          <PlayerButton>3</PlayerButton>
+          <PlayerButton>4</PlayerButton>
+        </PlayerWrapper>
         <ButtonWrapper>
           <Button>START</Button>
         </ButtonWrapper>
