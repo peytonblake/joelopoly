@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface ButtonI {
+  active: boolean
+}
+
 export const TitleScreenContainer = styled.div`
   background: #2c3325;
   height: 100vh;
@@ -43,7 +47,7 @@ export const PlayerText = styled.h1`
   font-size: 3rem;
 `;
 
-export const PlayerButton = styled.button`
+export const PlayerButton = styled.button<ButtonI>`
   background-color: ${({ active }) => (active ? 'green' : 'grey')};
   color: #fef9f3;
   padding: 10px 10px;
