@@ -15,7 +15,7 @@ export const TitleScreenContainer = styled.div`
 
 export const TitleContainer = styled.div`
   justify-content: center;
-  margin-bottom: 10vh;
+  margin-bottom: 5vh;
 `;
 
 export const TitleText = styled.h1`
@@ -37,7 +37,7 @@ export const PlayerWrapper = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-  column-gap: 10vh;
+  column-gap: 5vh;
   margin-bottom: 10vh;
 `;
 
@@ -48,8 +48,8 @@ export const PlayerText = styled.h1`
 `;
 
 export const PlayerButton = styled.button<ButtonI>`
-  background-color: ${({ active }) => (active ? 'green' : 'grey')};
-  color: #fef9f3;
+  background-color: ${({ active, disabled }) => (disabled ? 'dark_grey' : (active ? 'green' : 'grey'))};
+  color: ${({ disabled }) => (disabled ? "dark_grey" : "#fef9f3")};
   padding: 10px 10px;
   font-size: 20px;
   cursor: pointer;
