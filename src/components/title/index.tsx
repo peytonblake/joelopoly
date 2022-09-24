@@ -21,8 +21,8 @@ function validNumAIPlayers(numHumanPlayers: number, numAIPlayers: number) {
 }
 
 function SelectNumPlayers() {
-  const [numHumanPlayers, setNumHumanPlayers] = useState(1);
-  const [numAIPlayers, setNumAIPlayers] = useState(1);
+  const [numHumanPlayers, setNumHumanPlayers] = useState(2);
+  const [numAIPlayers, setNumAIPlayers] = useState(0);
   const minAIPlayers = Math.max(0, MIN_TOTAL_PLAYERS - numHumanPlayers);
   const maxAIPlayers = MAX_TOTAL_PLAYERS - numHumanPlayers;
 

@@ -15,7 +15,7 @@ export const TitleScreenContainer = styled.div`
 
 export const TitleContainer = styled.div`
   justify-content: center;
-  margin-bottom: 5vh;
+  margin-bottom: 0vh;
 `;
 
 export const TitleText = styled.h1`
@@ -38,7 +38,7 @@ export const PlayerWrapper = styled.div`
   flex-direction: row;
   align-items: center;
   column-gap: 5vh;
-  margin-bottom: 10vh;
+  margin-bottom: 5vh;
 `;
 
 export const PlayerText = styled.h1`
