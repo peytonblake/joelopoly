@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button } from '../button';
 import numPlayers from '../../game/numPlayers';
 import game from '../../game/game';
 
@@ -10,6 +11,9 @@ const Turn = () => {
       {game.rollForFirst().map((roll, i) => <div>{game.players[i].name} rolled a {roll}</div>)}
       <div>
         {game.getCurrentPlayer().name} goes first!
+      </div>
+      <div>
+        <Button to="/game">Play!</Button>
       </div>
     </>
   );
