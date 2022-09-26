@@ -9,7 +9,7 @@ import {
   PlayerButton,
 } from './title';
 import { Button } from '../button';
-import { isPropertySignature } from 'typescript';
+import numPlayers from '../../game/numPlayers';
 
 const MIN_TOTAL_PLAYERS: number = 2;
 const MAX_TOTAL_PLAYERS: number = 4;
@@ -20,9 +20,8 @@ function validNumAIPlayers(numHumanPlayers: number, numAIPlayers: number) {
   return Math.min(maxAIPlayers, Math.max(numAIPlayers, minAIPlayers));
 }
 
-function SelectNumPlayers() {
-  const [numHumanPlayers, setNumHumanPlayers] = useState(2);
-  const [numAIPlayers, setNumAIPlayers] = useState(0);
+function SelectNumPlayers(numHumanPlayers: number, setNumHumanPlayers: React.Dispatch<React.SetStateAction<number>>, 
+                          numAIPlayers: number, setNumAIPlayers: React.Dispatch<React.SetStateAction<number>>) {
   const minAIPlayers = Math.max(0, MIN_TOTAL_PLAYERS - numHumanPlayers);
   const maxAIPlayers = MAX_TOTAL_PLAYERS - numHumanPlayers;
 
@@ -31,7 +30,12 @@ function SelectNumPlayers() {
       <PlayerWrapper>
         <PlayerText>Number of Human Players</PlayerText>
         {[...Array(MAX_TOTAL_PLAYERS + 1)].map((n, i) => (
-          <PlayerButton onClick={() => {setNumHumanPlayers(i); setNumAIPlayers(validNumAIPlayers(i, numAIPlayers))}} active={numHumanPlayers === i}>
+          <PlayerButton onClick={() => {
+              setNumHumanPlayers(i);
+              const newNumAIPlayers = validNumAIPlayers(i, numAIPlayers); 
+              setNumAIPlayers(newNumAIPlayers);
+              numPlayers.numHumanPlayers = i;
+              numPlayers.numAIPlayers = newNumAIPlayers}} active={numHumanPlayers === i}>
             {i}
           </PlayerButton>
         ))}
@@ -39,7 +43,7 @@ function SelectNumPlayers() {
       <PlayerWrapper>
       <PlayerText>Number of AI Players</PlayerText>
       {[...Array(MAX_TOTAL_PLAYERS + 1)].map((n, i) => (
-        <PlayerButton onClick={() => setNumAIPlayers(i)} active={numAIPlayers === i} disabled={i < minAIPlayers || i > maxAIPlayers}>
+        <PlayerButton onClick={() => {setNumAIPlayers(i); numPlayers.numAIPlayers = i}} active={numAIPlayers === i} disabled={i < minAIPlayers || i > maxAIPlayers}>
           {i}
         </PlayerButton>
       ))}
@@ -49,15 +53,17 @@ function SelectNumPlayers() {
 }
 
 const Title = () => {
+  const [numHumanPlayers, setNumHumanPlayers] = useState(numPlayers.numHumanPlayers);
+  const [numAIPlayers, setNumAIPlayers] = useState(numPlayers.numAIPlayers);
   return (
     <>
       <TitleScreenContainer>
         <TitleContainer>
           <TitleText>JOELOPOLY</TitleText>
         </TitleContainer>
-        <SelectNumPlayers />
+        {SelectNumPlayers(numHumanPlayers, setNumHumanPlayers, numAIPlayers, setNumAIPlayers)}
         <ButtonWrapper>
-          <Button to="/color">START</Button>
+          <Button to={numHumanPlayers > 0 ? "/color" : "/turn"}>START</Button>
         </ButtonWrapper>
       </TitleScreenContainer>
     </>
