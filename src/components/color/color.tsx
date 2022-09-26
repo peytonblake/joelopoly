@@ -54,14 +54,14 @@ export const ColorButtonContainer = styled.div`
 `;
 
 export const ColorButton = styled.button<ButtonI>`
-  background-color: ${({ active, color }) => (active ? color : 'grey')};
+  background-color: ${({color}) => color };
   color: #fef9f3;
   padding: 10px 10px;
   font-size: 20px;
   cursor: pointer;
-  height: 8vh;
-  width: 8vh;
-  border: none;
+  height: 10vh;
+  width: 10vh;
+  border: ${({active}) => active ? "10px solid #AAAAAA" : "none"};
 
   &:hover {
     transform: scale(1.05, 1.05);

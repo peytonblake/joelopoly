@@ -1,6 +1,7 @@
 import React from 'react';
 import Color from '../components/color';
 
+
 const ColorScreen = () => {
   return (
     <>
