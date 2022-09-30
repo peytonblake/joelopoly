@@ -1,10 +1,36 @@
 import { Player, PlayerInit, playerColors } from './players';
+import properties, { Property } from './properties';
+import squares, { CommunityChest, Chance, Go, JustVisiting, FreeParking, GoToJail } from './squares';
+import taxes, { Tax } from './taxes';
+import utilities, { Utility } from './utilities';
+import transportations, { Transportation } from './transportations';
+
 
 class Game {
 
     players: Player[] = [];
     currentPlayer: number = 0;
     aiPlayersAdded: boolean = false;
+    board: (Property | CommunityChest | Chance | Go | JustVisiting | FreeParking | GoToJail | Tax | Utility | Transportation) [];
+
+    constructor() {
+        this.board = new Array(40);
+        for (const property of properties) {
+            this.board[property.location] = property;
+        }
+        for (const square of squares) {
+            this.board[square.location] = square;
+        }
+        for (const tax of taxes) {
+            this.board[tax.location] = tax;
+        }
+        for (const utility of utilities) {
+            this.board[utility.location] = utility;
+        }
+        for (const transportation of transportations) {
+            this.board[transportation.location] = transportation;
+        }
+    }
 
     addPlayer(playerInit: PlayerInit) {
         this.players.push(new Player(playerInit));

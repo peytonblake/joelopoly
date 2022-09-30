@@ -66,5 +66,4 @@ function loadTransportations(filePath: string) {
 }
 
 const transportations = loadTransportations("/data/transportation.csv");
-console.log(transportations);
 export default transportations;
