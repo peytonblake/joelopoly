@@ -3,12 +3,20 @@ import game, { rollDie } from '../../game/game';
 import { Button } from '../button';
 
 const Game = () => {
-  const [turnState, setTurnState] = useState('roll');
+  const [turnState, setTurnState] = useState('start');
   const [die1, setDie1] = useState(rollDie());
   const [die2, setDie2] = useState(rollDie());
 
   return (
       <>
+        {turnState == "start" && 
+          <>
+            <div>{game.getCurrentPlayer().name}'s Turn!</div>
+            <div>
+              <Button to="/game" onClick={() => setTurnState("roll")}>Roll</Button>
+            </div>
+          </>
+        }
         {turnState == "roll" &&
           <>
             <div>
@@ -24,7 +32,7 @@ const Game = () => {
         {turnState == "moving" &&
           <>
             <div>
-              Moving {die1 + die2} spaces to new location {game.getCurrentPlayer().location}
+              Moving {game.getCurrentPlayer().name} {die1 + die2} spaces to new location {game.getCurrentPlayer().location}
             </div>
             {game.getCurrentPlayer().passedGo &&
               <div>

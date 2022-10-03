@@ -16,9 +16,9 @@ class Game {
     constructor() {
         this.board = new Array(40);
         console.log("making the board, properties are ", properties);
-        console.log(properties.at(0));
+        console.log(JSON.stringify(properties.at(0)));
         for (let i = 0; i < 4; i++) {
-            console.log(`The ${i}th property is ${properties[i]}`)
+            console.log(`The ${i}th property is `, properties[i])
         }
         for (const property of properties) {
             console.log("Adding property ", property);
