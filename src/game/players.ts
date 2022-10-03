@@ -1,5 +1,6 @@
 import { Card } from './cards'
 import { Property } from './properties';
+import game from './game';
 
 export interface PlayerInit {
     color: string;
@@ -16,6 +17,7 @@ export class Player {
     cards: Card[] = [];
     properties: Property[] = [];
     alive: boolean = true;
+    passedGo: boolean = false;
 
     constructor(playerInit: PlayerInit) {
         this.color = playerInit.color;
@@ -23,7 +25,15 @@ export class Player {
         this.ai = playerInit.ai;
     }
 
-    move(places: number) {
+    move(numPlaces: number) {
+        this.location += numPlaces;
+        if (this.location >= game.board.length) {
+            this.money += 200;
+            this.passedGo = true;
+        } else {
+            this.passedGo = false;
+        }
+        this.location %= game.board.length;
     }
 }
 

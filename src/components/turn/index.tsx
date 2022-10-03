@@ -8,7 +8,7 @@ const Turn = () => {
 
   return (
     <>
-      {game.rollForFirst().map((roll, i) => <div>{game.players[i].name} rolled a {roll}</div>)}
+      {game.rollForFirst().map((roll, i) => <div>{game.players[i].name} (color {game.players[i].color}) rolled a {roll}</div>)}
       <div>
         {game.getCurrentPlayer().name} goes first!
       </div>
