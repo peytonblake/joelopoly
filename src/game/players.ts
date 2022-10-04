@@ -19,6 +19,8 @@ export class Player {
     alive: boolean = true;
     passedGo: boolean = false;
     inJail: boolean = false;
+    turnsInJail: number = 3;
+    rolledDouble: boolean = false;
 
     constructor(playerInit: PlayerInit) {
         this.color = playerInit.color;

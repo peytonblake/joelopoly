@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import game, { rollDie, purchasable } from '../../game/game';
+import game, { rollDie, purchasable, rolledDouble } from '../../game/game';
 import { Property } from '../../game/properties';
 import { Transportation } from '../../game/transportations';
 import { Tax } from '../../game/taxes';
@@ -17,6 +17,8 @@ function endSquareButton(turnStateSetter: Function, die1Setter: Function, die2Se
     </>
   )
 }
+
+
 
 const Game = () => {
   const [turnState, setTurnState] = useState('start');
@@ -47,6 +49,7 @@ const Game = () => {
         }
         {turnState == "moving" &&
           <>
+            {rolledDouble(die1,die2)}
             <div>
               Moving {game.getCurrentPlayer().name} {die1 + die2} spaces to new location {game.getCurrentPlayer().location}
             </div>
@@ -119,7 +122,7 @@ const Game = () => {
             {game.board[game.getCurrentPlayer().location] instanceof GoToJail &&
               <>
                 <div>Landed on go to jail</div>
-                <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
+                <Button to="/game" onClick={() => setTurnState("jail")}>Go To Jail</Button>
               </>
             }
           </>
@@ -134,6 +137,12 @@ const Game = () => {
               <Button to="/game" onClick={() => {setTurnState("endTurn"); game.purchasable = false; game.nextTurn();}}>Pass</Button>
             </>
             }
+            </>
+          }
+          {turnState == "jail" &&
+            <>
+              {game.players[game.currentPlayer].name} you will either have to roll doubles, pay 50 dollars, or wait 3 turns to get out of jail
+              <Button to="/game" onClick={() => setTurnState("endTurn")}></Button>
             </>
           }
           {turnState == "endTurn" &&

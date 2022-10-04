@@ -95,6 +95,29 @@ export function rollDie() {
     return 1 + Math.floor(Math.random() * 5);
 }
 
+export function rolledDouble(die1:number, die2:number){
+
+    // checks for double rolled
+    if (die1 == die2){
+        game.players[game.currentPlayer].rolledDouble = true;
+        if (game.players[game.currentPlayer].inJail == true){
+            game.players[game.currentPlayer].inJail == false;
+        }
+    }
+  
+    // if double is not rolled turns in jail is subtracted by 1
+    if (game.players[game.currentPlayer].inJail == true){
+        game.players[game.currentPlayer].turnsInJail -= 1;
+        if (game.players[game.currentPlayer].turnsInJail == 0){
+            game.players[game.currentPlayer].inJail = false;
+            game.players[game.currentPlayer].turnsInJail = 3;
+        }
+    }
+  
+    return;
+  
+  }
+
 export function purchasable(){
     
     if (board[game.players[game.currentPlayer].location][11] == -1){
