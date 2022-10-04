@@ -122,7 +122,6 @@ const Game = () => {
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            poop
           </>
           }
           {turnState == "property" &&
