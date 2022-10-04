@@ -138,6 +138,7 @@ const Game = () => {
           }
           {turnState == "endTurn" &&
           <>
+          {game.players[game.currentPlayer].name} end your turn.
           {endSquareButton(setTurnState, setDie1, setDie2)}
           </>
           }
