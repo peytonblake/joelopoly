@@ -1,5 +1,11 @@
 import { Player } from "./players";
-import Papa, { ParseResult } from "papaparse";
+
+const TRANSPORTATIONS_DATA = [
+    "Hiking,200,5,25,50,100,200,100",
+    "Rafting,200,15,25,50,100,200,100",
+    "Caving,200,25,25,50,100,200,100",
+    "Kayaking,200,35,25,50,100,200,100"
+]
 
 export class Transportation {
     name: string;
@@ -29,41 +35,21 @@ export class Transportation {
     }
 }
 
-interface TransportationLine {
-    Name: string,
-    Cost: string,
-    "Rent (1 Owned)": string,
-    "Rent (2 Owned)": string,
-    "Rent (3 Owned)": string,
-    "Rent (4 Owned)": string,
-    Mortgage: string,
-    Location: string
-}
-
-function loadTransportations(filePath: string) {
+function loadTransportations() {
     let transportations: Transportation[] = [];
-    Papa.parse(filePath, {
-        header: true,
-        download: true,
-        delimiter: ',',
-        complete: (results: ParseResult<TransportationLine>) => {
-            for (const transportationLine of results.data) {
-                const transportation = new Transportation(transportationLine.Name, parseInt(transportationLine.Location), 
-                                              parseInt(transportationLine.Cost), parseInt(transportationLine.Mortgage),
-                                              [parseInt(transportationLine["Rent (1 Owned)"]),
-                                               parseInt(transportationLine["Rent (2 Owned)"]),
-                                               parseInt(transportationLine["Rent (3 Owned)"]),
-                                               parseInt(transportationLine["Rent (4 Owned)"])]);
-                for (const otherTransportation of transportations) {
-                    otherTransportation.otherTransportations.push(transportation);
-                    transportation.otherTransportations.push(otherTransportation);
-                }
-                transportations.push(transportation);
-            }
+    for (const transportationLine of TRANSPORTATIONS_DATA) {
+        const transportationData = transportationLine.split(',');
+        const transportation = new Transportation(transportationData[0], parseInt(transportationData[2]), 
+                                        parseInt(transportationData[1]), parseInt(transportationData[7]),
+                                        [3, 4, 5, 6].map(i => parseInt(transportationData[i])));
+        for (const otherTransportation of transportations) {
+            otherTransportation.otherTransportations.push(transportation);
+            transportation.otherTransportations.push(otherTransportation);
         }
-    })
+        transportations.push(transportation);
+    }
     return transportations;
 }
 
-const transportations = loadTransportations("/data/transportation.csv");
+const transportations = loadTransportations();
 export default transportations;

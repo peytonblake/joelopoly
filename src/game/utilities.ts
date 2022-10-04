@@ -1,5 +1,9 @@
 import { Player } from "./players";
-import Papa, { ParseResult } from "papaparse";
+
+const UTILITIES_DATA = [
+    "Flashlight Batteries,12,150,75,4,10",
+    "Water Filter,28,150,75,4,10"
+]
 
 export class Utility {
     name: string;
@@ -26,37 +30,21 @@ export class Utility {
     }
 }
 
-interface UtilityLine {
-    Name: string,
-    Price: string,
-    "Rent Multiplier (1 Owned)": string,
-    "Rent Multiplier (2 Owned)": string,
-    Mortgage: string,
-    Location: string
-}
-
-function loadUtilities(filePath: string) {
+function loadUtilities() {
     let utilities: Utility[] = [];
-    Papa.parse(filePath, {
-        header: true,
-        download: true,
-        delimiter: ',',
-        complete: (results: ParseResult<UtilityLine>) => {
-            for (const utilityLine of results.data) {
-                const utility = new Utility(utilityLine.Name, parseInt(utilityLine.Location), 
-                                            parseInt(utilityLine.Price), parseInt(utilityLine.Mortgage),
-                                            [parseInt(utilityLine["Rent Multiplier (1 Owned)"]),
-                                             parseInt(utilityLine["Rent Multiplier (2 Owned)"])]);
-                if (utilities.length > 0) {
-                    utilities[0].otherUtility = utility
-                    utility.otherUtility = utilities[0];
-                }
-                utilities.push(utility);
-            }
+    for (const utilityLine of UTILITIES_DATA) {
+        const utilityData = utilityLine.split(',');
+        const utility = new Utility(utilityData[0], parseInt(utilityData[1]), 
+                                    parseInt(utilityData[2]), parseInt(utilityData[3]),
+                                    [parseInt(utilityData[4]), parseInt(utilityData[5])]);
+        if (utilities.length > 0) {
+            utilities[0].otherUtility = utility
+            utility.otherUtility = utilities[0];
         }
-    })
+        utilities.push(utility);
+    }
     return utilities;
 }
 
-const utilities = loadUtilities("/data/utilities.csv");
+const utilities = loadUtilities();
 export default utilities;

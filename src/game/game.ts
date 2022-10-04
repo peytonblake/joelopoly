@@ -15,13 +15,7 @@ class Game {
 
     constructor() {
         this.board = new Array(40);
-        console.log("making the board, properties are ", properties);
-        console.log(JSON.stringify(properties.at(0)));
-        for (let i = 0; i < 4; i++) {
-            console.log(`The ${i}th property is `, properties[i])
-        }
         for (const property of properties) {
-            console.log("Adding property ", property);
             this.board[property.location] = property;
         }
         for (const square of squares) {
@@ -36,7 +30,6 @@ class Game {
         for (const transportation of transportations) {
             this.board[transportation.location] = transportation;
         }
-        console.log("This is the board");
         console.log(this.board);
     }
 

@@ -1,4 +1,15 @@
-import Papa, { ParseResult } from "papaparse";
+const SQUARES_DATA = [
+    "Community Chest,2",
+    "Chance,7",
+    "Community Chest,17",
+    "Chance,22",
+    "Community Chest,33",
+    "Chance,36",
+    "Go,0",
+    "Just Visiting,10",
+    "Free Parking,20",
+    "Go To Jail,30"
+]
 
 class Square {
     location: number;
@@ -32,38 +43,28 @@ export class GoToJail extends Square {
 
 }
 
-interface SquareLine {
-    Square: string,
-    Location: string;
-}
-
-function loadSquares(filePath: string) {
+function loadSquares() {
     let squares: Square[] = [];
-    Papa.parse(filePath, {
-        header: true,
-        download: true,
-        delimiter: ',',
-        complete: (results: ParseResult<SquareLine>) => {
-            for (const squareLine of results.data) {
-                const location = parseInt(squareLine.Location);
-                if (squareLine.Square == "Community Chest") {
-                    squares.push(new CommunityChest(location));
-                } else if (squareLine.Square == "Chance") {
-                    squares.push(new Chance(location));
-                } else if (squareLine.Square == "Go") {
-                    squares.push(new Go(location));
-                } else if (squareLine.Square == "Just Visiting") {
-                    squares.push(new JustVisiting(location));
-                } else if (squareLine.Square == "Free Parking") {
-                    squares.push(new FreeParking(location));
-                } else if (squareLine.Square == "Go To Jail") {
-                    squares.push(new GoToJail(location));
-                }
-            }
+    for (const squareLine of SQUARES_DATA) {
+        const squareData = squareLine.split(',');
+        const squareType = squareData[0];
+        const location = parseInt(squareData[1]);
+        if (squareType == "Community Chest") {
+            squares.push(new CommunityChest(location));
+        } else if (squareType == "Chance") {
+            squares.push(new Chance(location));
+        } else if (squareType == "Go") {
+            squares.push(new Go(location));
+        } else if (squareType == "Just Visiting") {
+            squares.push(new JustVisiting(location));
+        } else if (squareType == "Free Parking") {
+            squares.push(new FreeParking(location));
+        } else if (squareType == "Go To Jail") {
+            squares.push(new GoToJail(location));
         }
-    })
+    }
     return squares;
 }
 
-const squares = loadSquares("/data/squares.csv");
+const squares = loadSquares();
 export default squares;

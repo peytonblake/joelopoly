@@ -1,36 +1,33 @@
-import Papa, { ParseResult } from "papaparse";
+const TAXES_DATA = [
+    "Littering Tax,4,200",
+    "Carbon Emissions Tax,38,100"
+]
 
-export interface Tax {
+export class Tax {
     name: string;
     location: number;
     amount: number;
+
+    constructor(name: string, location: number, amount: number) {
+        this.name = name;
+        this.location = location;
+        this.amount = amount;
+    }
 }
 
-interface TaxLine {
-    Tax: string,
-    Amount: string,
-    Location: string
-}
-
-function loadTaxes(filePath: string) {
+function loadTaxes() {
     let taxes: Tax[] = [];
-    Papa.parse(filePath, {
-        header: true,
-        download: true,
-        delimiter: ',',
-        complete: (results: ParseResult<TaxLine>) => {
-            for (const taxLine of results.data) {
-                const tax = {
-                    name: taxLine.Tax,
-                    location: parseInt(taxLine.Location),
-                    amount: parseInt(taxLine.Amount)
-                }
-                taxes.push(tax);
-            }
+    for (const taxLine of TAXES_DATA) {
+        const taxData = taxLine.split(',');
+        const tax = {
+            name: taxData[0],
+            location: parseInt(taxData[1]),
+            amount: parseInt(taxData[2])
         }
-    })
+        taxes.push(tax);
+    }
     return taxes;
 }
 
-const taxes = loadTaxes("/data/taxes.csv");
+const taxes = loadTaxes();
 export default taxes;
