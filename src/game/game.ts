@@ -1,10 +1,50 @@
 import { Player, PlayerInit, playerColors } from './players';
+import properties, { Property } from './properties';
+import squares, { CommunityChest, Chance, Go, JustVisiting, FreeParking, GoToJail } from './squares';
+import taxes, { Tax } from './taxes';
+import utilities, { Utility } from './utilities';
+import transportations, { Transportation } from './transportations';
+import { board, tileNames} from './board';
 
 class Game {
 
     players: Player[] = [];
     currentPlayer: number = 0;
     aiPlayersAdded: boolean = false;
+    property: boolean = false;
+    uniqeSquare: boolean = false;
+    taxes: boolean = false;
+    transportation: boolean = false;
+    utilities: boolean = false;
+    purchasable: boolean = false;
+    board: Array<Property | CommunityChest | Chance | Go | JustVisiting | FreeParking | GoToJail | Tax | Utility | Transportation>;
+
+    constructor() {
+        this.board = new Array(40);
+        console.log("making the board, properties are ", properties);
+        console.log(properties.at(0));
+        for (let i = 0; i < 4; i++) {
+            console.log(`The ${i}th property is ${properties[i]}`)
+        }
+        for (const property of properties) {
+            console.log("Adding property ", property);
+            this.board[property.location] = property;
+        }
+        for (const square of squares) {
+            this.board[square.location] = square;
+        }
+        for (const tax of taxes) {
+            this.board[tax.location] = tax;
+        }
+        for (const utility of utilities) {
+            this.board[utility.location] = utility;
+        }
+        for (const transportation of transportations) {
+            this.board[transportation.location] = transportation;
+        }
+        console.log("This is the board");
+        console.log(this.board);
+    }
 
     addPlayer(playerInit: PlayerInit) {
         this.players.push(new Player(playerInit));
@@ -51,12 +91,16 @@ class Game {
 
 }
 
-function rollDie() {
+export function rollDie() {
     return 1 + Math.floor(Math.random() * 5);
 }
 
-export function rollDice() {
-    return rollDie() + rollDie();
+export function purchasable(){
+    
+    if (board[game.players[game.currentPlayer].location][11] == -1){
+        game.purchasable = true;
+    }
+    return;
 }
 
 const game = new Game();
