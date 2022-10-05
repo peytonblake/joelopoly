@@ -21,6 +21,7 @@ export class Player {
     inJail: boolean = false;
     turnsInJail: number = 3;
     rolledDouble: boolean = false;
+    onTax: boolean = false;
 
     constructor(playerInit: PlayerInit) {
         this.color = playerInit.color;

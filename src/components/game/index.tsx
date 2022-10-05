@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import game, { rollDie, purchasable, rolledDouble } from '../../game/game';
+import game, { rollDie, purchasable, rolledDouble, onTax } from '../../game/game';
 import { Property } from '../../game/properties';
 import { Transportation } from '../../game/transportations';
 import { Tax } from '../../game/taxes';
@@ -65,6 +65,7 @@ const Game = () => {
         }
         {turnState == "square" &&
           <>
+            {onTax()}
             {game.board[game.getCurrentPlayer().location] instanceof Property &&
               <>
                 <div>Landed on a property</div>
@@ -77,9 +78,12 @@ const Game = () => {
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            {game.board[game.getCurrentPlayer().location] instanceof Tax &&
+            {game.players[game.currentPlayer].onTax &&
               <>
                 <div>Landed on a tax</div>
+                {game.players[game.currentPlayer].onTax = false}
+                {game.players[game.currentPlayer].money -= board[game.players[game.currentPlayer].location][1]}
+                <div>Player {game.players[game.currentPlayer].name} had to pay {board[game.players[game.currentPlayer].location][1]}</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
@@ -125,6 +129,7 @@ const Game = () => {
                 <Button to="/game" onClick={() => setTurnState("jail")}>Go To Jail</Button>
               </>
             }
+            {console.log(tileNames[game.players[game.currentPlayer].location])}
           </>
           }
           {turnState == "property" &&
@@ -137,6 +142,7 @@ const Game = () => {
               <Button to="/game" onClick={() => {setTurnState("endTurn"); game.purchasable = false; game.nextTurn();}}>Pass</Button>
             </>
             }
+            {endSquareButton(setTurnState, setDie1, setDie2)}
             </>
           }
           {turnState == "jail" &&

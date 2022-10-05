@@ -126,5 +126,11 @@ export function purchasable(){
     return;
 }
 
+export function onTax(){
+    if (game.players[game.currentPlayer].location == 4 || game.players[game.currentPlayer].location == 38){
+        game.players[game.currentPlayer].onTax = true;
+    }
+}
+
 const game = new Game();
 export default game;
