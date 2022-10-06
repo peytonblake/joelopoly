@@ -19,12 +19,7 @@ function loadTaxes() {
     let taxes: Tax[] = [];
     for (const taxLine of TAXES_DATA) {
         const taxData = taxLine.split(',');
-        const tax = {
-            name: taxData[0],
-            location: parseInt(taxData[1]),
-            amount: parseInt(taxData[2])
-        }
-        taxes.push(tax);
+        taxes.push(new Tax(taxData[0], parseInt(taxData[1]), parseInt(taxData[2])));
     }
     return taxes;
 }
