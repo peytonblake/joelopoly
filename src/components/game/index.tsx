@@ -61,61 +61,61 @@ const Game = () => {
         }
         {turnState == "square" &&
           <>
-            {game.board[game.getCurrentPlayer().location] instanceof Property &&
+            {game.getCurrentSquare() instanceof Property &&
               <>
                 <div>Landed on a property</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            {game.board[game.getCurrentPlayer().location] instanceof Transportation &&
+            {game.getCurrentSquare() instanceof Transportation &&
               <>
                 <div>Landed on a transportation</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            {game.board[game.getCurrentPlayer().location] instanceof Tax &&
+            {game.getCurrentSquare() instanceof Tax &&
               <>
                 <div>Landed on a tax</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            {game.board[game.getCurrentPlayer().location] instanceof Utility &&
+            {game.getCurrentSquare() instanceof Utility &&
               <>
                 <div>Landed on a utility</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            {game.board[game.getCurrentPlayer().location] instanceof CommunityChest &&
+            {game.getCurrentSquare() instanceof CommunityChest &&
               <>
                 <div>Landed on a community chest</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            {game.board[game.getCurrentPlayer().location] instanceof Chance &&
+            {game.getCurrentSquare() instanceof Chance &&
               <>
                 <div>Landed on a chance</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            {game.board[game.getCurrentPlayer().location] instanceof Go &&
+            {game.getCurrentSquare() instanceof Go &&
               <>
                 <div>Landed on go</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            {game.board[game.getCurrentPlayer().location] instanceof JustVisiting &&
+            {game.getCurrentSquare() instanceof JustVisiting &&
               <>
                 <div>Landed on just visiting</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            {game.board[game.getCurrentPlayer().location] instanceof FreeParking &&
+            {game.getCurrentSquare() instanceof FreeParking &&
               <>
                 <div>Landed on free parking</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>
               </>
             }
-            {game.board[game.getCurrentPlayer().location] instanceof GoToJail &&
+            {game.getCurrentSquare() instanceof GoToJail &&
               <>
                 <div>Landed on go to jail</div>
                 <div>{endSquareButton(setTurnState, setDie1, setDie2)}</div>

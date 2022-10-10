@@ -30,7 +30,6 @@ class Game {
         for (const transportation of transportations) {
             this.board[transportation.location] = transportation;
         }
-        console.log(this.board);
     }
 
     addPlayer(playerInit: PlayerInit) {
@@ -70,6 +69,10 @@ class Game {
 
     getCurrentPlayer() {
         return this.players[this.currentPlayer];
+    }
+
+    getCurrentSquare() {
+        return this.board[this.getCurrentPlayer().location];
     }
 
     nextTurn() {
