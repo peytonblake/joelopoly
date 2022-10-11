@@ -5,7 +5,6 @@ import taxes, { Tax } from './taxes';
 import utilities, { Utility } from './utilities';
 import transportations, { Transportation } from './transportations';
 
-
 class Game {
 
     players: Player[] = [];
@@ -76,7 +75,30 @@ class Game {
     }
 
     nextTurn() {
-        this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+        if (!this.getCurrentPlayer().goesAgain) {
+            this.currentPlayer = (this.currentPlayer + 1) % this.players.length;
+        }
+    }
+
+    manageRoll(die1: number, die2: number) {
+        const doubles: boolean = die1 == die2;
+        const distance: number = die1 + die2;
+        if (game.getCurrentPlayer().inJail) {
+            if (doubles) {
+                game.getCurrentPlayer().inJail = false;
+                game.getCurrentPlayer().doublesRolled = 1;
+                game.getCurrentPlayer().move(distance);
+            } else {
+                game.getCurrentPlayer().turnsInJail -= 1;
+                if (game.getCurrentPlayer().turnsInJail == 0) {
+                    game.getCurrentPlayer().inJail = false;
+                }
+            }
+        } else {
+            if (doubles) {
+
+            }
+        }
     }
 
 }
@@ -84,6 +106,28 @@ class Game {
 export function rollDie() {
     return 1 + Math.floor(Math.random() * 5);
 }
+
+/*
+export function rolledDouble(die1: number, die2: number) {
+
+    // checks for double rolled
+    if (die1 == die2) {
+        game.players[game.currentPlayer].rolledDouble = true;
+        if (game.players[game.currentPlayer].inJail == true) {
+            game.players[game.currentPlayer].inJail == false;
+        }
+    }
+  
+    // if double is not rolled turns in jail is subtracted by 1
+    if (game.players[game.currentPlayer].inJail == true) {
+        game.players[game.currentPlayer].turnsInJail -= 1;
+        if (game.players[game.currentPlayer].turnsInJail == 0) {
+            game.players[game.currentPlayer].inJail = false;
+            game.players[game.currentPlayer].turnsInJail = 3;
+        }
+    } 
+}
+*/
 
 const game = new Game();
 export default game;

@@ -1,0 +1,193 @@
+import React, { useState } from 'react';
+import numPlayers from '../../game/numPlayers';
+import game, { rollDie } from '../../game/game';
+import { Button } from '../button';
+import { board, tileNames } from '../../game/board';
+
+
+// Handles rolling for current player and adding roll and changing player location
+// roll is an integer and set to rollDice result function, prison1Roll and prison2Roll are for checking if a double is rolled to get out of prison
+// the result and where the current player is located is displayed in the console
+function roll(){
+
+
+  
+  let roll1: number = 0;
+  let roll2: number = 0;
+
+  if ((game.players[game.currentPlayer].hasRoled == false && game.players[game.currentPlayer].inPrison == false) || (game.players[game.currentPlayer].rolledDoubles > 0 && game.players[game.currentPlayer].inPrison == false)){
+
+    roll1 = rollDie();
+    roll2 = rollDie();
+
+    if (roll1 == roll2){
+      game.players[game.currentPlayer].rolledDoubles += 1;
+      if (game.players[game.currentPlayer].rolledDoubles == 3){
+        game.players[game.currentPlayer].inPrison = true;
+        game.players[game.currentPlayer].location = 10;
+        return console.log("Player "+game.players[game.currentPlayer].name+" has rolled 3 doubles and is now in jail!");
+      }
+      console.log("Player "+game.players[game.currentPlayer].name+"has rolled doubles")
+    }
+    else{
+      game.players[game.currentPlayer].rolledDoubles = 0;
+    }
+
+    // subtracts 40 if player has gone around entire board and gives player 200 for passing GO
+    if ((game.players[game.currentPlayer].location + (roll1 + roll2)) >= 40){
+      game.players[game.currentPlayer].location = (game.players[game.currentPlayer].location + (roll1 + roll2)) - 40;
+      game.players[game.currentPlayer].money += 200;
+    }
+
+    else{
+      game.players[game.currentPlayer].location = game.players[game.currentPlayer].location + (roll1 + roll2);
+    }
+
+    game.players[game.currentPlayer].hasRoled = true;
+    console.log(game.players[game.currentPlayer].location);
+    return console.log("Player "+game.players[game.currentPlayer].name+"has landed on "+tileNames[game.players[game.currentPlayer].location]);
+
+
+  }
+
+  // rolling to get out of prison
+  if (game.players[game.currentPlayer].inPrison == true && game.players[game.currentPlayer].hasRoled == false){
+    roll1 = rollDie();
+    roll2 = rollDie();
+
+    if (roll1 == roll2){
+      game.players[game.currentPlayer].inPrison = false;
+      game.players[game.currentPlayer].location = game.players[game.currentPlayer].location + (roll1+roll2);
+    }
+    game.players[game.currentPlayer].hasRoled = true;
+    game.players[game.currentPlayer].turnsInPrison -= 1;
+    if (game.players[game.currentPlayer].turnsInPrison == 0){
+      game.players[game.currentPlayer].inPrison = false;
+      game.players[game.currentPlayer].turnsInPrison = 3;
+      game.players[game.currentPlayer].location = 10;
+    }
+    return console.log("Player "+game.players[game.currentPlayer].name+" has landed on "+tileNames[game.players[game.currentPlayer].location]);
+  }
+
+
+}
+
+// handles what happens on the tile the player lands on (ex. buying/paying rent, community chest, free parking etc)
+function event(){
+  
+  return; //console.log("Player "+game.players[game.currentPlayer].name+"has landed on "+tileNames[game.players[game.currentPlayer].location]);
+}
+
+// handles passing the turn to the next player up
+function pass(){
+
+  if (game.players[game.currentPlayer].hasRoled == true){
+
+    game.players[game.currentPlayer].hasRoled = false;
+    game.players[game.currentPlayer].rolledDoubles = 0;
+
+
+    if (game.currentPlayer < (numPlayers.numAIPlayers+numPlayers.numHumanPlayers)-1){
+      game.currentPlayer += 1
+    }
+
+    else{
+      game.currentPlayer = 0
+    }
+    return console.log(game.currentPlayer);
+  }
+  else{
+    console.log("Player "+game.players[game.currentPlayer].name+" needs to roll");
+  }
+
+  
+}
+
+
+// handles buying property if player chooses to buy the property if no one currently owns it
+function buy(){
+
+  if (game.players[game.currentPlayer].hasRoled == true){
+
+    if (game.players[game.currentPlayer].money >= board[game.players[game.currentPlayer].location][0] && board[game.players[game.currentPlayer].location][11] == -1){
+      board[game.players[game.currentPlayer].location][11] = game.currentPlayer;
+      game.players[game.currentPlayer].money -= board[game.players[game.currentPlayer].location][0];
+      console.log("player "+game.players[game.currentPlayer].name+" has purchased "+tileNames[game.players[game.currentPlayer].location])
+      console.log(game.players[game.currentPlayer].money);
+    }
+  }
+
+  return;
+}
+
+// Handles all gameplay rolls, buying/paying rent, events, etc
+//const Gameplay = () => {
+  //
+
+   // return (
+     // <>
+       // <br/>
+        //<button onClick={roll}>ROLL</button>
+        //<br/>
+        //<button onClick={event}>EVENT</button>
+        //<br/>
+        //<button onClick={buy}>BUY</button>
+        //<br/>
+        //<button onClick={pass}>PASS</button>
+
+      //</>
+    //);
+  //};
+
+ // export default Gameplay;
+
+
+  const Gameplay = () => {
+    const [turnState, setTurnState] = useState('roll');
+    const [die1, setDie1] = useState(rollDie());
+    const [die2, setDie2] = useState(rollDie());
+  
+    return (
+        <>
+          {turnState == "roll" &&
+            <>
+              <div>
+                {game.getCurrentPlayer().name} at location {game.getCurrentPlayer().location} rolled a {die1} and a {die2}
+              </div>
+              <div>
+                <Button to="/game" onClick={
+                  () => {setTurnState("moving"); game.getCurrentPlayer().move(die1 + die2)
+                  }}>Move</Button>
+              </div>
+            </>
+          }
+          {turnState == "moving" &&
+            <>
+              <div>
+                Moving {die1 + die2} spaces to new location {game.getCurrentPlayer().location}
+              </div>
+              {game.getCurrentPlayer().passedGo &&
+                <div>
+                  You passed Go! Collect $200
+                </div>
+              }
+              <div>
+                <Button to="/game" onClick={() => setTurnState("square")}>Now what?</Button>
+              </div>
+            </>
+          }
+          {turnState == "square" &&
+            <>
+              {game.board}
+              {game.board[game.getCurrentPlayer().location]}
+              {
+                console.log(game.board, game.board[game.getCurrentPlayer().location])
+              }
+            </>
+          }
+        </>
+      );
+    };
+    
+    export default Gameplay;
+    
