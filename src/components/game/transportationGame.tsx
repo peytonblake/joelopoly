@@ -27,18 +27,38 @@ export default function TransportationComponent(props: {done: Function, rerender
             )
         }
     } else if (t.ownedBy == null) {
-        return (
-            <>
-            <div>You landed on a transportation, {t.name}, which you can buy for ${t.price}</div>
-            <Button to="/game" onClick={() => {
-                t.ownedBy = game.getCurrentPlayer();
-                game.getCurrentPlayer().money -= t.price;
-                setBought(true);
-                props.rerender();
-            }}>Buy</Button>
-            <Button to="/game" onClick={() => props.done()}>{doneButtonText()}</Button>
-            </>
-        )
+        if (game.getCurrentPlayer().money >= t.price){
+            return (
+                <>
+                <div>You landed on a transportation, {t.name}, which you can buy for ${t.price}</div>
+                <Button to="/game" onClick={() => {
+                    t.ownedBy = game.getCurrentPlayer();
+                    game.getCurrentPlayer().transportations.push(t);
+                    game.getCurrentPlayer().money -= t.price;
+                    setBought(true);
+                    props.rerender();
+                }}>Buy</Button>
+                <Button to="/game" onClick={() => props.done()}>{doneButtonText()}</Button>
+                </>
+            )
+        }
+
+        else {
+
+            return (
+                <>
+                <div>You landed on a transportation, {t.name}</div>
+                <div>You do not have enough money to buy this transportation</div>
+                <Button to="/game" onClick={() => {
+                    
+                    props.rerender();
+                }}>ok</Button>
+                </>
+            )
+
+        }
+
+
     } else {
         if (game.getCurrentPlayer().money >= t.getRent()) {
             return (

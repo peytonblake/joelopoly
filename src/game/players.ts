@@ -1,6 +1,8 @@
 import { Card } from './cards'
 import { Property } from './properties';
 import game from './game';
+import { Transportation } from './transportations';
+import { Utility } from './utilities';
 
 export interface PlayerInit {
     color: string;
@@ -16,6 +18,8 @@ export class Player {
     money: number = 1500;
     cards: Card[] = [];
     properties: Property[] = [];
+    transportations: Transportation[] = []
+    utilitys: Utility[] = []
     alive: boolean = true;
     passedGo: boolean = false;
     inJail: boolean = false;
