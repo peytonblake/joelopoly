@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Transportation } from "../../game/transportations";
 import game from '../../game/game';
 import { doneButtonText } from './index';
-import { Button } from '../button';
+import { Button, EventText, EventContainer } from '../game/game';
 
 
 export default function TransportationComponent(props: {done: Function, rerender: Function, bankrupt: Function}) {
@@ -14,14 +14,18 @@ export default function TransportationComponent(props: {done: Function, rerender
         if (bought) {
             return (
                 <>
-                <div>You have bought {t.name} for ${t.price}</div>
+                {/* <EventContainer>
+                    <EventText>You have bought {t.name} for ${t.price}</EventText>
+                </EventContainer> */}
                 <Button to="/game" onClick={() => props.done()}>{doneButtonText()}</Button>
                 </>
             )
         } else {
             return (
                 <>
-                <div>You landed on a transportation, {t.name}, which you own</div>
+                {/* <EventContainer>
+                    <EventText>You landed on a transportation, {t.name}, which you own</EventText>
+                </EventContainer> */}
                 <Button to="/game" onClick={() => props.done()}>{doneButtonText()}</Button>
                 </>
             )
@@ -29,41 +33,47 @@ export default function TransportationComponent(props: {done: Function, rerender
     } else if (t.ownedBy == null) {
         return (
             <>
-            <div>You landed on a transportation, {t.name}, which you can buy for ${t.price}</div>
-            <Button to="/game" onClick={() => {
-                t.ownedBy = game.getCurrentPlayer();
-                game.getCurrentPlayer().money -= t.price;
-                setBought(true);
-                props.rerender();
-            }}>Buy</Button>
-            <Button to="/game" onClick={() => props.done()}>{doneButtonText()}</Button>
+            <EventContainer>
+                {/* <EventText>You landed on {t.name} -- ${t.price}</EventText> */}
+                <Button to="/game" onClick={() => {
+                    t.ownedBy = game.getCurrentPlayer();
+                    game.getCurrentPlayer().money -= t.price;
+                    setBought(true);
+                    props.rerender();
+                }}>Buy ${t.price}</Button>
+                <Button to="/game" onClick={() => props.done()}>{doneButtonText()}</Button>
+            </EventContainer>
             </>
         )
     } else {
         if (game.getCurrentPlayer().money >= t.getRent()) {
             return (
                 <>
-                <div>You landed on a transportation, {t.name}, which is owned by {t.ownedBy.name}</div>
-                <div>You must pay {t.ownedBy.name} ${t.getRent()}</div>
+                {/* <EventContainer>
+                    <EventText>You landed on {t.name}, owned by {t.ownedBy.name}</EventText>
+                    <EventText>You must pay {t.ownedBy.name} ${t.getRent()}</EventText>
+                </EventContainer> */}
                 <Button to="/game" onClick={() => {
                     game.getCurrentPlayer().money -= t.getRent();
                     t.ownedBy!.money += t.getRent();
                     props.done();
-                }}>Pay</Button>
+                }}>Pay ${t.getRent()}</Button>
                 </>
             )
         } else {
             return (
                 <>
-                <div>You landed on a transportation, {t.name}, which is owned by {t.ownedBy.name}</div>
-                <div>You must pay {t.ownedBy.name} ${t.getRent()}, but you have ${game.getCurrentPlayer().money}!</div>
-                <div>Pay what you can</div>
+                {/* <EventContainer>
+                    <EventText>You landed on {t.name}, owned by {t.ownedBy.name}</EventText>
+                    <EventText>You must pay {t.ownedBy.name} ${t.getRent()}, but you only have ${game.getCurrentPlayer().money}!</EventText>
+                    <EventText>Pay what you can</EventText>
+                </EventContainer> */}
                 <Button to="/game" onClick={() => {
                     t.ownedBy!.money += game.getCurrentPlayer().money;
                     game.getCurrentPlayer().money -= t.getRent();
                     game.getCurrentPlayer().bankruptTo = t.ownedBy;
                     props.bankrupt();
-                }}>Pay</Button>
+                }}>Pay ${t.getRent()}</Button>
                 </>
             )
         }

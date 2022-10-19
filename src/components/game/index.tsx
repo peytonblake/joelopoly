@@ -6,23 +6,68 @@ import { Transportation } from '../../game/transportations';
 import { Tax } from '../../game/taxes';
 import { Utility } from '../../game/utilities';
 import { CommunityChest, Chance, Go, JustVisiting, FreeParking, GoToJail } from '../../game/squares';
-import { Button } from '../button';
 import { JAIL_PRICE } from '../../game/constants';
 import TransportationComponent from './transportationGame';
+import { Button, GameWrapper, SidebarWrapper, RollWrapper, DieWrapper, MiddleWrapper, 
+         TitleText, BoardWrapper, RightWrapper, ButtonWrapper, EventContainer, EventText, 
+         SideInfoBox, SideInfo, SideInfoText, CardPlaceholder } from './game';
+import CardGetter from './cards';
+import Dice1 from '../../images/Dice1.png';
+import Dice2 from '../../images/Dice2.png';
+import Dice3 from '../../images/Dice3.png';
+import Dice4 from '../../images/Dice4.png';
+import Dice5 from '../../images/Dice5.png';
+import Dice6 from '../../images/Dice6.png';
+import Board from '../../images/board.png';
 
-
-function displayInfo(die1: number, die2: number) {
+function displayInfo() {
   return (
     <>
+    <SidebarWrapper>
       {game.players.map((player: Player) => (
         <>
-        <div>{player.name} is at location {player.location} and has ${player.money}</div>
-        {player.properties.map((property: Property) => <div>{`---Owns ${property.name}`}</div>)}
+        <SideInfoBox>
+          <SideInfo first={true}><SideInfoText>{player.name}</SideInfoText></SideInfo>
+          <SideInfo first={true}><SideInfoText>{player.location}</SideInfoText></SideInfo>
+          <SideInfo first={false}><SideInfoText>${player.money}</SideInfoText></SideInfo>
+          {/* {player.properties.map((property: Property) => <SideInfoText>{`---Owns ${property.name}`}</SideInfoText>)} */}
+        </SideInfoBox>
         </>
       ))}
-      <div>It is currently {game.getCurrentPlayer().name}'s Turn</div>
-      <div>Die 1: {die1 > 0 ? die1 : ''} Die 2: {die2 > 0 ? die2 : ''}</div>
-      <div>{"________________________"}</div>
+    </SidebarWrapper>
+    </>
+  )
+}
+
+function getDiceImage(die: number) {
+  switch(die) {
+    case 1: { return <DieWrapper src={Dice1} alt="1" /> }
+    case 2: { return <DieWrapper src={Dice2} alt="2" /> }
+    case 3: { return <DieWrapper src={Dice3} alt="3" /> }
+    case 4: { return <DieWrapper src={Dice4} alt="4" /> }
+    case 5: { return <DieWrapper src={Dice5} alt="5" /> }
+    case 6: { return <DieWrapper src={Dice6} alt="6" /> }
+  }
+}
+
+function displayRoll(die1: number, die2: number) {
+  return (
+    <>
+    <RollWrapper>
+      {getDiceImage(die1)}
+      {getDiceImage(die2)}
+    </RollWrapper>
+    </>
+  )
+}
+
+function displayBoard() {
+  return (
+    <>
+    <MiddleWrapper>
+      <TitleText>JOELOPOLY</TitleText>
+      <BoardWrapper src={Board} alt="Board"/>
+    </MiddleWrapper>
     </>
   )
 }
@@ -65,101 +110,114 @@ const Game = () => {
 
   return (
       <>
-        {displayInfo(die1, die2)}
-        {turnState == "start" && 
+      <GameWrapper>
+        {displayInfo()}
+        {displayBoard()}
+        <RightWrapper>
+        {displayRoll(die1, die2)}
+          {turnState == "start" && 
           <>
+            <CardPlaceholder />
             {game.getCurrentPlayer().inJail && setTurnState("inJail")}
-            <div>{game.getCurrentPlayer().name}'s Turn!</div>
-            <div>
+            {/* <EventText>{game.getCurrentPlayer().name}'s Turn!</EventText> */}
+            <ButtonWrapper>
               <Button to="/game" onClick={() => roll()}>Roll</Button>
-            </div>
+            </ButtonWrapper>
           </>
         }
         {turnState == "inJail" &&
           <>
-            <div>{game.getCurrentPlayer().name} is in Jail for {game.getCurrentPlayer().turnsInJail} more turns</div>
+            <CardPlaceholder />
+            {/* <EventText>{game.getCurrentPlayer().name} is in Jail for {game.getCurrentPlayer().turnsInJail} more turns</EventText> */}
             {game.getCurrentPlayer().money >= JAIL_PRICE && 
-              <div>
+              <ButtonWrapper>
                 <Button to="/game" onClick={() => {
                   game.getCurrentPlayer().money -= JAIL_PRICE;
                   game.getCurrentPlayer().inJail = false;
                   roll();
                 }}>Pay and Roll</Button>
-              </div>
+              </ButtonWrapper>
             }
-            <div>
+            <ButtonWrapper>
               <Button to="/game" onClick={() => roll()}>Roll for Doubles</Button>
-            </div>
-            <div>
+            </ButtonWrapper>
+            <ButtonWrapper>
               <Button to="/game" onClick={() => {
                 game.getCurrentPlayer().waitInJail();
                 game.nextTurn();
                 setTurnState("start")
               }}>Skip Turn</Button>
-            </div>
+            </ButtonWrapper>
           </>
         }
         {turnState == "roll" &&
           <>
-            <div>
+            {/* <EventText>
               {game.getCurrentPlayer().name} at location {game.getCurrentPlayer().location} rolled a {die1} and a {die2} 
-            </div>
-            <div>
+            </EventText> */}
+            <CardPlaceholder />
+            <ButtonWrapper>
               <Button to="/game" onClick={() => setTurnState(game.getCurrentPlayer().manageRoll(die1, die2))}>Move</Button>
-            </div>
+            </ButtonWrapper>
           </>
         }
         {turnState == "moving" &&
           <>
-            <div>
+            {/* <EventText>
               Moving {game.getCurrentPlayer().name} {die1 + die2} spaces to new location {game.getCurrentPlayer().location}
-            </div>
-            {game.getCurrentPlayer().passedGo &&
-              <div>
+            </EventText> */}
+            {/* {game.getCurrentPlayer().passedGo &&
+              <EventText>
                 You passed Go! Collect $200
-              </div>
-            }
-            <div>
-              <Button to="/game" onClick={() => setTurnState("square")}>Now what?</Button>
-            </div>
+              </EventText>
+            } */}
+            <CardPlaceholder />
+            <ButtonWrapper>
+              <Button to="/game" onClick={() => setTurnState("square")}>Next</Button>
+            </ButtonWrapper>
           </>
         }
         {turnState == "square" &&
           <>
             {game.getCurrentSquare() instanceof Property &&
               <>
-                <div>Landed on a property - {(game.getCurrentSquare() as Property).name} National Park</div>
+                {CardGetter((game.getCurrentSquare() as Property).name)}
+                {/* <EventText>Landed on {(game.getCurrentSquare() as Property).name} National Park</EventText> */}
                 {(() => {
                   const park: Property = (game.getCurrentSquare() as Property);
                   if (park.ownedBy == game.getCurrentPlayer()) {
                     return (
                     <>
-                    <div>You own this park</div>
-                    <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>Nice, end turn</Button></div>
+                    {/* <EventText>You own this park</EventText> */}
+                    <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
                     </>
                   )
                   } else if (park.ownedBy == null){
                     return (
                       <>
-                      <div>This park is available to buy for ${park.price} - Would you like to buy it?</div>
-                      <div><Button to="/game" onClick={() => {
+                      <CardPlaceholder />
+                      {/* <EventContainer>
+                        <EventText>This park is available to buy for ${park.price}</EventText>
+                      </EventContainer> */}
+                      <ButtonWrapper><Button to="/game" onClick={() => {
                         game.getCurrentPlayer().money -= park.price;
                         park.ownedBy = game.getCurrentPlayer();
                         game.getCurrentPlayer().properties.push(park);
                         setTurnState("endTurn");
-                      }}>Yes</Button></div>
-                      <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>No thanks, end turn</Button></div>
+                      }}>Buy ${park.price}</Button></ButtonWrapper>
+                      <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
                       </>
                     )
                   } else {
                     return (
                       <>
-                      <div>This Park is owned by {park.ownedBy.name} - You must pay them ${park.getRent()}</div>
-                      <div><Button to="/game" onClick={() => {
+                      <CardPlaceholder />
+                      {/* <EventText>This Park is owned by {park.ownedBy.name} - You must pay them ${park.getRent()}</EventText> */}
+                      <ButtonWrapper><Button to="/game" onClick={() => {
                         game.getCurrentPlayer().money -= park.getRent();
                         park.ownedBy!.money += park.getRent();
                         setTurnState("endTurn");
-                      }}>Pay</Button></div>
+                      }}>Pay ${park.getRent()}</Button></ButtonWrapper>
                       </>
                     )
                   }
@@ -170,72 +228,84 @@ const Game = () => {
             {game.getCurrentSquare() instanceof Transportation && <TransportationComponent done={doneWithSquare} rerender={rerender} bankrupt={bankrupt}/>}
             {game.getCurrentSquare() instanceof Tax &&
               <>
-                <div>Landed on a tax</div>
-                <div>Player {game.getCurrentPlayer().name} has to pay {(game.getCurrentSquare() as Tax).amount}</div>
-                <div><Button to="/game" onClick={() => {
+                <CardPlaceholder />
+                {/* <EventText>Landed on a tax</EventText>
+                <EventText>{game.getCurrentPlayer().name} has to pay {(game.getCurrentSquare() as Tax).amount}</EventText> */}
+                <ButtonWrapper><Button to="/game" onClick={() => {
                   game.nextTurn(); 
                   setTurnState('start');
                   game.getCurrentPlayer().money -= (game.getCurrentSquare() as Tax).amount
-                }}>Pay and end turn</Button></div>
+                }}>Pay ${(game.getCurrentSquare() as Tax).amount}</Button></ButtonWrapper>
               </>
             }
             {game.getCurrentSquare() instanceof Utility &&
               <>
-                <div>Landed on a utility</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                <CardPlaceholder />
+                {/* <EventText>Landed on a utility</EventText> */}
+                <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
               </>
             }
             {game.getCurrentSquare() instanceof CommunityChest &&
               <>
-                <div>Landed on a community chest</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                <CardPlaceholder />
+                {/* <EventText>Landed on a community chest</EventText> */}
+                <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
               </>
             }
             {game.getCurrentSquare() instanceof Chance &&
               <>
-                <div>Landed on a chance</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                <CardPlaceholder />
+                {/* <EventText>Landed on a chance</EventText> */}
+                <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
               </>
             }
             {game.getCurrentSquare() instanceof Go &&
               <>
-                <div>Landed on go</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+              <CardPlaceholder />
+                {/* <EventText>Landed on go</EventText> */}
+                <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
               </>
             }
             {game.getCurrentSquare() instanceof JustVisiting &&
               <>
-                <div>Landed on just visiting</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+              <CardPlaceholder />
+                {/* <EventText>Landed on just visiting</EventText> */}
+                <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
               </>
             }
             {game.getCurrentSquare() instanceof FreeParking &&
               <>
-                <div>Landed on free parking</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+              <CardPlaceholder />
+                {/* <EventText>Landed on free parking</EventText> */}
+                <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
               </>
             }
             {game.getCurrentSquare() instanceof GoToJail &&
               <>
-                <div>Go to Jail!</div>
+                <CardPlaceholder />
+                {/* <EventText>Go to Jail!</EventText> */}
                 {game.getCurrentPlayer().goToJail()}
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
               </>
             }
           </>
           }
           {turnState == "speeding" &&
             <>
-            <div>You rolled doubles 3 times in a row! You are speeding; go to jail!</div>
-            <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+            {/* <EventText>You rolled doubles 3 times in a row! You are speeding; go to jail!</EventText> */}
+            <CardPlaceholder />
+            <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
             </>
           }
           {turnState == "endTurn" &&
             <>
-            {game.players[game.currentPlayer].name} end your turn.
-            <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+            {/* {game.players[game.currentPlayer].name} end your turn. */}
+            <CardPlaceholder />
+            <ButtonWrapper><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></ButtonWrapper>
             </>
           }
+          </RightWrapper>
+      </GameWrapper>
       </>
     );
   };
