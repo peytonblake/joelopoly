@@ -46,7 +46,10 @@ const Game = () => {
     setDie1(rollDie);
     setDie2(rollDie);
     setTurnState("roll");
+    
   }
+
+  
 
   function doneWithSquare() {
     game.nextTurn();
@@ -68,116 +71,267 @@ const Game = () => {
   return (
       <>
         {displayInfo(die1, die2)}
-        {turnState == "start" && 
-          <>
-            {game.getCurrentPlayer().inJail && setTurnState("inJail")}
-            <div>{game.getCurrentPlayer().name}'s Turn!</div>
-            <div>
-              <Button to="/game" onClick={() => roll()}>Roll</Button>
-            </div>
-          </>
+        
+        {game.getCurrentPlayer().alive == false && 
+        <> 
+          {game.nextTurn()}
+          {setTurnState("start")}
+        </>
         }
-        {turnState == "inJail" &&
+        {game.getCurrentPlayer().alive == true &&
           <>
-            <div>{game.getCurrentPlayer().name} is in Jail for {game.getCurrentPlayer().turnsInJail} more turns</div>
-            {game.getCurrentPlayer().money >= JAIL_PRICE && 
+          {turnState == "start" && 
+            <>
+              
+              {game.getCurrentPlayer().inJail && setTurnState("inJail")}
+              {game.getCurrentPlayer().money < 0 && setTurnState("bankrupt")}
+              <div>{game.getCurrentPlayer().name}'s Turn!</div>
+
+              
+              
+             
               <div>
-                <Button to="/game" onClick={() => {
-                  game.getCurrentPlayer().money -= JAIL_PRICE;
-                  game.getCurrentPlayer().inJail = false;
-                  roll();
-                }}>Pay and Roll</Button>
+                <Button to="/game" onClick={() => roll()}>Roll</Button>
               </div>
-            }
-            <div>
-              <Button to="/game" onClick={() => roll()}>Roll for Doubles</Button>
-            </div>
-            <div>
-              <Button to="/game" onClick={() => {
-                game.getCurrentPlayer().waitInJail();
-                game.nextTurn();
-                setTurnState("start")
-              }}>Skip Turn</Button>
-            </div>
-          </>
-        }
-        {turnState == "roll" &&
-          <>
-            <div>
-              {game.getCurrentPlayer().name} at location {game.getCurrentPlayer().location} rolled a {die1} and a {die2} 
-            </div>
-            <div>
-              <Button to="/game" onClick={() => setTurnState(game.getCurrentPlayer().manageRoll(die1, die2))}>Move</Button>
-            </div>
-          </>
-        }
-        {turnState == "moving" &&
-          <>
-            <div>
-              Moving {game.getCurrentPlayer().name} {die1 + die2} spaces to new location {game.getCurrentPlayer().location}
-            </div>
-            {game.getCurrentPlayer().passedGo &&
-              <div>
-                You passed Go! Collect $200
-              </div>
-            }
-            <div>
-              <Button to="/game" onClick={() => setTurnState("square")}>Now what?</Button>
-            </div>
-          </>
-        }
-        {turnState == "square" &&
-          <>
-            {game.getCurrentSquare() instanceof Property &&
+              
+            </>
+          }
+          {turnState == "inJail" &&
+            <>
+              <div>{game.getCurrentPlayer().name} is in Jail for {game.getCurrentPlayer().turnsInJail} more turns</div>
+              {game.getCurrentPlayer().ai &&
+                <>
+                
+                  <div>{game.getCurrentPlayer().name} is rolling for doubles</div>
+                  <Button to="/game" onClick={() => roll()}>Roll for Doubles</Button>
+                  
+                
+                </>
+                
+    
+          
+              }
+              {game.getCurrentPlayer().ai == false &&
               <>
-                <div>Landed on a property - {(game.getCurrentSquare() as Property).name} National Park</div>
+                {game.getCurrentPlayer().money >= JAIL_PRICE && 
+                  <div>
+                    <Button to="/game" onClick={() => {
+                      game.getCurrentPlayer().money -= JAIL_PRICE;
+                      game.getCurrentPlayer().inJail = false;
+                      roll();
+                    }}>Pay and Roll</Button>
+                  </div>
+                }
+                <div>
+                  <Button to="/game" onClick={() => roll()}>Roll for Doubles</Button>
+                </div>
+                <div>
+                  <Button to="/game" onClick={() => {
+                    game.getCurrentPlayer().waitInJail();
+                    game.nextTurn();
+                    setTurnState("start")
+                  }}>Skip Turn</Button>
+                </div>
+                </>
+            }
+              </>
+            
+          }
+          {turnState == "roll" &&
+            <>
+              <div>
+              {game.getCurrentPlayer().name} at location {game.getCurrentPlayer().location} rolled a {die1} and a {die2} 
+              </div>
+              
+              {game.getCurrentPlayer().ai == true && 
+                <>
+              <Button id="auto" to="/game" onClick={() => setTurnState(game.getCurrentPlayer().manageRoll(die1, die2))}>Move</Button>
+                
+                </>
+              }
+              {game.getCurrentPlayer().ai == false &&
+              <div>
+                <Button to="/game" onClick={() => setTurnState(game.getCurrentPlayer().manageRoll(die1, die2))}>Move</Button>
+              </div>
+              }
+            </>
+          }
+          {turnState == "moving" &&
+            <>
+              {game.getCurrentPlayer().ai && setTurnState("square")}
+              <div>
+                Moving {game.getCurrentPlayer().name} {die1 + die2} spaces to new location {game.getCurrentPlayer().location}
+              </div>
+              {game.getCurrentPlayer().passedGo &&
+                <div>
+                  You passed Go! Collect $200
+                </div>
+              }
+
+              
+
+              <div>
+                <Button to="/game" onClick={() => setTurnState("square")}>Now what?</Button>
+              </div>
+            </>
+          }
+          {turnState == "square" &&
+            <>
+              {game.getCurrentSquare() instanceof Property &&
+                <>
+                  <div>Landed on a property - {(game.getCurrentSquare() as Property).name} National Park</div>
+                  {(() => {
+                    const park: Property = (game.getCurrentSquare() as Property);
+                    if (park.ownedBy == game.getCurrentPlayer()) {
+                      return (
+                      <>
+                      <div>You own this park</div>
+                      <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>Nice, end turn</Button></div>
+                      </>
+                    )
+                    } else if (park.ownedBy == null){
+
+                        if (game.getCurrentPlayer().money >= park.price){
+
+                          if (game.getCurrentPlayer().ai == true){
+                            return (
+                              <>
+                              
+                              <div>{game.getCurrentPlayer().name} bought {park.name} for ${park.price}</div>
+                              <div><Button to="/game" onClick={() => {
+                                game.getCurrentPlayer().money -= park.price;
+                                park.ownedBy = game.getCurrentPlayer();
+                                game.getCurrentPlayer().properties.push(park);
+                                
+                                setTurnState("endTurn");
+                              }}>OK</Button></div>
+                              </>
+                            )
+                          }
+
+                          return (
+                            <>
+                            
+                            <div>This park is available to buy for ${park.price} - Would you like to buy it?</div>
+                            <div><Button to="/game" onClick={() => {
+                              game.getCurrentPlayer().money -= park.price;
+                              park.ownedBy = game.getCurrentPlayer();
+                              game.getCurrentPlayer().properties.push(park);
+                              setTurnState("endTurn");
+                            }}>Yes</Button></div>
+                            <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>No thanks, end turn</Button></div>
+                            </>
+                          )
+                        }
+
+                        else{
+                          return (
+                            <>
+                            
+                            <div>{game.getCurrentPlayer().name} does not have enough money to buy this property</div>
+                            <div><Button to="/game" onClick={() => {
+                          
+                              setTurnState("endTurn");
+                            }}>ok</Button></div>
+                            </>
+                          )
+
+                        }
+
+                    } else {
+                      return (
+                        <>
+                        <div>This Park is owned by {park.ownedBy.name} - You must pay them ${park.getRent()}</div>
+                        <div><Button to="/game" onClick={() => {
+                          game.getCurrentPlayer().money -= park.getRent();
+                          park.ownedBy!.money += park.getRent();
+                          setTurnState("endTurn");
+                        }}>Pay</Button></div>
+                        </>
+                      )
+                    }
+                  })()
+                  }
+                </>
+              }
+              {game.getCurrentSquare() instanceof Transportation && <TransportationComponent done={doneWithSquare} rerender={rerender} bankrupt={bankrupt}/>}
+              {game.getCurrentSquare() instanceof Tax &&
+                <>
+                  <div>Landed on a tax</div>
+                  <div>Player {game.getCurrentPlayer().name} has to pay {(game.getCurrentSquare() as Tax).amount}</div>
+                  <div><Button to="/game" onClick={() => {
+                    const tax: Tax = (game.getCurrentSquare() as Tax);
+                    //game.nextTurn(); 
+                    game.getCurrentPlayer().money -= tax.amount
+                    setTurnState('endTurn');
+                  }}>Pay and end turn</Button></div>
+                </>
+              }
+              {game.getCurrentSquare() instanceof Utility &&
+                <>
+                <div>Landed on a Utility - {(game.getCurrentSquare() as Utility).name}</div>
                 {(() => {
-                  const park: Property = (game.getCurrentSquare() as Property);
-                  if (park.ownedBy == game.getCurrentPlayer()) {
+                  const util: Utility = (game.getCurrentSquare() as Utility);
+                  if (util.ownedBy == game.getCurrentPlayer()) {
                     return (
                     <>
-                    <div>You own this park</div>
+                    <div>You own this utility</div>
                     <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>Nice, end turn</Button></div>
                     </>
                   )
-                  } else if (park.ownedBy == null){
-                      if (game.getCurrentPlayer().money >= park.price){
+                  } else if (util.ownedBy == null){
+
+                    if (game.getCurrentPlayer().money >= util.price){
+
+                      if (game.getCurrentPlayer().ai == true){
                         return (
                           <>
-                          
-                          <div>This park is available to buy for ${park.price} - Would you like to buy it?</div>
+                          <div>{game.getCurrentPlayer().name} bought {util.name} for ${util.price}</div>
                           <div><Button to="/game" onClick={() => {
-                            game.getCurrentPlayer().money -= park.price;
-                            park.ownedBy = game.getCurrentPlayer();
-                            game.getCurrentPlayer().properties.push(park);
+                            game.getCurrentPlayer().money -= util.price;
+                            util.ownedBy = game.getCurrentPlayer();
+                            game.getCurrentPlayer().utilitys.push(util);
                             setTurnState("endTurn");
-                          }}>Yes</Button></div>
-                          <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>No thanks, end turn</Button></div>
+                          }}>OK</Button></div>
                           </>
                         )
                       }
 
-                      else{
-                        return (
-                          <>
-                          
-                          <div>You do not have enough money to buy this property</div>
-                          <div><Button to="/game" onClick={() => {
-                         
-                            setTurnState("endTurn");
-                          }}>ok</Button></div>
-                          </>
-                        )
+                      return (
+                        <>
+                        <div>This utility is available to buy for ${util.price} - Would you like to buy it?</div>
+                        <div><Button to="/game" onClick={() => {
+                          game.getCurrentPlayer().money -= util.price;
+                          util.ownedBy = game.getCurrentPlayer();
+                          game.getCurrentPlayer().utilitys.push(util);
+                          setTurnState("endTurn");
+                        }}>Yes</Button></div>
+                        <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>No thanks, end turn</Button></div>
+                        </>
+                      )
+                    }
 
-                      }
+                    else {
+                      return (
+                        <>
+                        <div>{game.getCurrentPlayer().name} does have enough money to buy this utility</div>
+                        <div><Button to="/game" onClick={() => {
+                        
+                          setTurnState("endTurn");
+                        }}>ok</Button></div>
+                        
+                        </>
+                      )
+                    }
 
                   } else {
                     return (
                       <>
-                      <div>This Park is owned by {park.ownedBy.name} - You must pay them ${park.getRent()}</div>
+                      <div>This Park is owned by {util.ownedBy.name} - You must pay them ${util.getRent()} times the number you roll on 2 dice</div>
                       <div><Button to="/game" onClick={() => {
-                        game.getCurrentPlayer().money -= park.getRent();
-                        park.ownedBy!.money += park.getRent();
+                        roll();
+                        game.getCurrentPlayer().money -= (die1 + die2) * util.getRent();
+                        util.ownedBy!.money += (die1 + die2) * util.getRent();
                         setTurnState("endTurn");
                       }}>Pay</Button></div>
                       </>
@@ -186,133 +340,84 @@ const Game = () => {
                 })()
                 }
               </>
-            }
-            {game.getCurrentSquare() instanceof Transportation && <TransportationComponent done={doneWithSquare} rerender={rerender} bankrupt={bankrupt}/>}
-            {game.getCurrentSquare() instanceof Tax &&
-              <>
-                <div>Landed on a tax</div>
-                <div>Player {game.getCurrentPlayer().name} has to pay {(game.getCurrentSquare() as Tax).amount}</div>
-                <div><Button to="/game" onClick={() => {
-                  const tax: Tax = (game.getCurrentSquare() as Tax);
-                  //game.nextTurn(); 
-                  game.getCurrentPlayer().money -= tax.amount
-                  setTurnState('endTurn');
-                }}>Pay and end turn</Button></div>
-              </>
-            }
-            {game.getCurrentSquare() instanceof Utility &&
-              <>
-              <div>Landed on a Utility - {(game.getCurrentSquare() as Utility).name}</div>
-              {(() => {
-                const util: Utility = (game.getCurrentSquare() as Utility);
-                if (util.ownedBy == game.getCurrentPlayer()) {
-                  return (
-                  <>
-                  <div>You own this utility</div>
-                  <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>Nice, end turn</Button></div>
-                  </>
-                )
-                } else if (util.ownedBy == null){
-                  if (game.getCurrentPlayer().money >= util.price){
-                    return (
-                      <>
-                      <div>This utility is available to buy for ${util.price} - Would you like to buy it?</div>
-                      <div><Button to="/game" onClick={() => {
-                        game.getCurrentPlayer().money -= util.price;
-                        util.ownedBy = game.getCurrentPlayer();
-                        game.getCurrentPlayer().utilitys.push(util);
-                        setTurnState("endTurn");
-                      }}>Yes</Button></div>
-                      <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>No thanks, end turn</Button></div>
-                      </>
-                    )
-                  }
+              }
 
-                  else {
-                    return (
-                      <>
-                      <div>You dont have enough money to buy this utility</div>
-                      <div><Button to="/game" onClick={() => {
-                       
-                        setTurnState("endTurn");
-                      }}>ok</Button></div>
-                      
-                      </>
-                    )
-                  }
-
-                } else {
-                  return (
-                    <>
-                    <div>This Park is owned by {util.ownedBy.name} - You must pay them ${util.getRent()} times the number you roll on 2 dice</div>
-                    <div><Button to="/game" onClick={() => {
-                      roll();
-                      game.getCurrentPlayer().money -= (die1 + die2) * util.getRent();
-                      util.ownedBy!.money += (die1 + die2) * util.getRent();
-                      setTurnState("endTurn");
-                    }}>Pay</Button></div>
-                    </>
-                  )
-                }
-              })()
+              {game.getCurrentSquare() instanceof CommunityChest &&
+                <>
+                  <div>Landed on a community chest</div>
+                  <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                </>
+              }
+              {game.getCurrentSquare() instanceof Chance &&
+                <>
+                  <div>Landed on a chance</div>
+                  <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                </>
+              }
+              {game.getCurrentSquare() instanceof Go &&
+                <>
+                  <div>Landed on go</div>
+                  <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                </>
+              }
+              {game.getCurrentSquare() instanceof JustVisiting &&
+                <>
+                  <div>Landed on just visiting</div>
+                  <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                </>
+              }
+              {game.getCurrentSquare() instanceof FreeParking &&
+                <>
+                  <div>Landed on free parking</div>
+                  <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                </>
+              }
+              {game.getCurrentSquare() instanceof GoToJail &&
+                <>
+                  <div>Go to Jail!</div>
+                  {game.getCurrentPlayer().goToJail()}
+                  <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                </>
               }
             </>
             }
+            {turnState == "speeding" &&
+              <>
+              <div>You rolled doubles 3 times in a row! You are speeding; go to jail!</div>
+              <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+              </>
+            }
 
-            {game.getCurrentSquare() instanceof CommunityChest &&
+            
+
+            {turnState == "bankrupt" &&
+                <>
+                  
+
+                    <div>{game.getCurrentPlayer().name} went bankrupt select which properties you want to sell to get above bankruptcy</div>
+                    <div><Button to="/game" onClick={() => {game.sellProperty(); game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+                    
+                  
+
+                  
+                </>
+            }
+
+
+            {turnState == "endTurn" &&
               <>
-                <div>Landed on a community chest</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
+              {game.players[game.currentPlayer].name} end your turn.
+              <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
               </>
             }
-            {game.getCurrentSquare() instanceof Chance &&
-              <>
-                <div>Landed on a chance</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
-              </>
-            }
-            {game.getCurrentSquare() instanceof Go &&
-              <>
-                <div>Landed on go</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
-              </>
-            }
-            {game.getCurrentSquare() instanceof JustVisiting &&
-              <>
-                <div>Landed on just visiting</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
-              </>
-            }
-            {game.getCurrentSquare() instanceof FreeParking &&
-              <>
-                <div>Landed on free parking</div>
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
-              </>
-            }
-            {game.getCurrentSquare() instanceof GoToJail &&
-              <>
-                <div>Go to Jail!</div>
-                {game.getCurrentPlayer().goToJail()}
-                <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
-              </>
-            }
-          </>
-          }
-          {turnState == "speeding" &&
-            <>
-            <div>You rolled doubles 3 times in a row! You are speeding; go to jail!</div>
-            <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
-            </>
-          }
-          {turnState == "endTurn" &&
-            <>
-            {game.players[game.currentPlayer].name} end your turn.
-            <div><Button to="/game" onClick={() => {game.nextTurn(); setTurnState('start')}}>End Turn</Button></div>
-            </>
-          }
-      </>
-    );
-  };
+
+            
+
+        </>
+        }
+        </>
+      );
+    };
   
   export default Game;
   

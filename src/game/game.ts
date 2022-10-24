@@ -4,6 +4,8 @@ import squares, { CommunityChest, Chance, Go, JustVisiting, FreeParking, GoToJai
 import taxes, { Tax } from './taxes';
 import utilities, { Utility } from './utilities';
 import transportations, { Transportation } from './transportations';
+import { BADHINTS } from 'dns';
+
 
 class Game {
 
@@ -101,11 +103,52 @@ class Game {
         }
     }
 
+    sellProperty(){
+        // finds lowest priced property current bankrupt player has and sells it
+        // finds lowest property price index and sends it to back of current player property list and pops from array
+
+        let lowest = 9999;
+        let index = 0;
+        let index2 = game.getCurrentPlayer().properties.length-1
+        for (let i = 0; i < game.players[game.currentPlayer].properties.length-1; i++){
+            if (game.getCurrentPlayer().properties[i].price < lowest){
+                index = i
+            }
+        }
+
+        let park: Property = game.getCurrentPlayer().properties[index];
+        let park2: Property = game.getCurrentPlayer().properties[index2];
+        game.getCurrentPlayer().properties[index2] = park;
+        game.getCurrentPlayer().properties[index] = park2;
+        game.getCurrentPlayer().money += park.price;
+        park.ownedBy = null;
+        game.getCurrentPlayer().properties.pop();
+
+        if (game.getCurrentPlayer().money < 0){
+            
+            if (game.getCurrentPlayer().properties.length == 0){
+                game.getCurrentPlayer().alive = false;
+                return
+            }
+
+            else{
+                this.sellProperty()
+            }
+        }
+
+        return
+    }
+
+
+    
+
 }
 
 export function rollDie() {
     return 1 + Math.floor(Math.random() * 5);
 }
+
+
 
 /*
 export function rolledDouble(die1: number, die2: number) {
