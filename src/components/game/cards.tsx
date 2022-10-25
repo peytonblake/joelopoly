@@ -23,6 +23,10 @@ import Yosemite from '../../images/properties/yosemite.png';
 import Zion from '../../images/properties/zion.png';
 import Flashlight from '../../images/supplies/flashlight.png';
 import Water from '../../images/supplies/water.png';
+import Hiking from '../../images/attractions/hiking.png';
+import Caving from '../../images/attractions/caving.png';
+import Kayaking from '../../images/attractions/kayaking.png';
+import Rafting from '../../images/attractions/rafting.png';
 import { CardWrapper } from './game';
 
 export default function CardGetter(cardName: string) {
@@ -93,11 +97,23 @@ export default function CardGetter(cardName: string) {
     case 'Zion': {
       return <CardWrapper src={Zion} alt={cardName} />;
     }
-    case 'Flashlight': {
+    case 'Flashlight Batteries': {
       return <CardWrapper src={Flashlight} alt={cardName} />;
     }
-    case 'Water': {
+    case 'Water Filter': {
       return <CardWrapper src={Water} alt={cardName} />;
+    }
+    case 'Hiking': {
+      return <CardWrapper src={Hiking} alt={cardName} />;
+    }
+    case 'Caving': {
+      return <CardWrapper src={Caving} alt={cardName} />;
+    }
+    case 'Kayaking': {
+      return <CardWrapper src={Kayaking} alt={cardName} />;
+    }
+    case 'Rafting': {
+      return <CardWrapper src={Rafting} alt={cardName} />;
     }
     default: {
       return <CardWrapper src={Zion} alt={cardName} />;

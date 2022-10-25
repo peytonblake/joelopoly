@@ -6,6 +6,7 @@ import { Utility } from '../../game/utilities';
 import { Tax } from '../../game/taxes';
 import monopoly from '../../game/monopoly';
 import { ButtonWrapper, Button, MessageText } from './game';
+import CardGetter from './cards';
 import { displayRoll } from '.';
 
 function squareName(square: Property | Transportation | Utility) {
@@ -121,6 +122,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
             <>
                 <MessageText>You landed on {squareName(square)}</MessageText>
                 <MessageText>You own this square</MessageText>
+                {CardGetter(square.name)}
                 <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state="endTurn"})}>End Turn</Button></ButtonWrapper>
             </>
         )
@@ -130,6 +132,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
             <>
                 <MessageText>You landed on {squareName(square)}</MessageText>
                 <MessageText>This square is unowned, but you can buy it for ${square.price}</MessageText>
+                {CardGetter(square.name)}
                 <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {
                     monopoly.buy();
                     monopoly.state="boughtSquare"
@@ -142,6 +145,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
         display = (
             <>
                 <MessageText>You have bought {squareName(square)} for ${square.price}</MessageText>
+                {CardGetter(square.name)}
                 <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state="endTurn"})}>End Turn</Button></ButtonWrapper>
             </>
         )
@@ -151,6 +155,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
             <>
                 <MessageText>You landed on {squareName(square)}</MessageText>
                 <MessageText>This square is unowned, but you cannot afford to buy it</MessageText>
+                {CardGetter(square.name)}
                 <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state="endTurn"})}>End Turn</Button></ButtonWrapper>
             </>
         )
@@ -160,6 +165,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
             <>
                 <MessageText>You landed on {squareName(square)}</MessageText>
                 <MessageText>You must pay ${square.getRent()} to {square.ownedBy!.name}</MessageText>
+                {CardGetter(square.name)}
                 <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.payRent()})}>Pay</Button></ButtonWrapper>
             </>
         )
@@ -228,21 +234,21 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
         display = (
             <>
             <MessageText>You landed on Go</MessageText>
-            <ButtonWrapper><Button to='/game' onClick={() => {monopoly.state = "endTurn"}}>End Turn</Button></ButtonWrapper>
+            <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state = "endTurn"})}>End Turn</Button></ButtonWrapper>
             </>
         )
     } else if (gameState == "justVisiting") {
         display = (
             <>
             <MessageText>You landed on Just Visiting</MessageText>
-            <ButtonWrapper><Button to='/game' onClick={() => {monopoly.state = "endTurn"}}>End Turn</Button></ButtonWrapper>
+            <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state = "endTurn"})}>End Turn</Button></ButtonWrapper>
             </>
         )
     } else if (gameState == "freeParking") {
         display = (
             <>
             <MessageText>You landed on Free Parking</MessageText>
-            <ButtonWrapper><Button to='/game' onClick={() => {monopoly.state = "endTurn"}}>End Turn</Button></ButtonWrapper>
+            <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state = "endTurn"})}>End Turn</Button></ButtonWrapper>
             </>
         )
     } else if (gameState == "goToJail") {

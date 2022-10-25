@@ -75,6 +75,8 @@ export class Monopoly {
     rollDice() {
         this.die1 = rollDie();
         this.die2 = rollDie();
+        this.die1 = 1;
+        this.die2 = 1;
     }
 
     rollForFirst() {
@@ -217,6 +219,9 @@ export class Monopoly {
                 this.state = "cannotAffordSquare";
             }
         } else {
+            if (square instanceof Utility) {
+                square.dieTotal = this.die1 + this.die2;
+            }
             const rent = square.getRent();
             this.getCurrentPlayer().amountOwed = rent;
             this.getCurrentPlayer().owesOtherPlayer = square.ownedBy;
