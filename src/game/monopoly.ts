@@ -10,8 +10,8 @@ import { SPEEDING_DOUBLES, JAIL_PRICE, COMMUNITY_SERVICE_PAYMENT, PLAYER_COLORS 
 
 type GameState = "needPlayers" | "rollForFirst" | "start" | "roll" | "inJail" | "won" | "speeding" | "square" | "ownedSquare" | 
     "buySquare" | "onOwnedSquare" | "cannotAffordSquare" | "paySquareRent" | "boughtSquare" |
-    "mortgageRent" | "mortgageTax" | "loseSquareRent" | "loseTax" | "payTax"
-    | "sellProperties" | "endTurn" | "move" | "oweOtherPlayer" | 
+    "mortgageRent" | "mortgageTax" | "loseSquareRent" | "loseTax" | "payTax" | 
+    "endTurn" | "move" | 
     "payCommunityService" | "mortgageCommunityService" | "readCard" |
     "passedGo" | "tax" | "communityChest" | "chance" | "go" | "justVisiting" |
     "freeParking" | "goToJail" | "failedRollDoublesGetOutOfJail";
@@ -66,7 +66,7 @@ export class Monopoly {
             this.players.push(new Player({
                 color: playerColors[i],
                 name: `Bot ${i + 1}`,
-                ai: false
+                ai: true
             }))
         }
         this.state = "rollForFirst";
