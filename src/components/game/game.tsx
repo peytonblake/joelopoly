@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 interface divI {
-  first: boolean
+  first: boolean;
 }
 
 export const Button = styled(Link)`
@@ -48,7 +48,7 @@ export const SideInfo = styled.div<divI>`
   background: #cde6d0;
   width: 100vh;
   max-width: 20vh;
-  margin-left: ${({ first }) => (first ? "10px" : "0px")};
+  margin-left: ${({ first }) => (first ? '10px' : '0px')};
 `;
 
 export const SideInfoText = styled.h1`
