@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { JAIL_PRICE } from '../../game/constants';
+import { JAIL_PRICE, MINIGAME_PAGES } from '../../game/constants';
 import { Property } from '../../game/properties';
 import { Transportation } from '../../game/transportations';
 import { Utility } from '../../game/utilities';
@@ -223,11 +223,12 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
             </>
         )
     } else if (gameState == "passedGo") {
+        const miniGame = MINIGAME_PAGES[Math.floor(Math.random() * MINIGAME_PAGES.length)];
         display = (
             <>
             <MessageText>You passed Go</MessageText>
             <MessageText>Play a MiniGame</MessageText>
-            <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.passedGo()})}>Play</Button></ButtonWrapper>
+            <ButtonWrapper><Button to={miniGame} onClick={buttonWrapper(() => {monopoly.passedGo()})}>Play</Button></ButtonWrapper>
             </>
         )
     } else if (gameState == "go") {

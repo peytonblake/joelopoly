@@ -75,8 +75,6 @@ export class Monopoly {
     rollDice() {
         this.die1 = rollDie();
         this.die2 = rollDie();
-        this.die1 = 1;
-        this.die2 = 1;
     }
 
     rollForFirst() {
@@ -184,6 +182,10 @@ export class Monopoly {
 
     passedGo() {
         this.state = "square";
+    }
+
+    manageMiniGameReward() {
+        this.getCurrentPlayer().money += parseInt(localStorage['miniGame']);
     }
 
     square() {
