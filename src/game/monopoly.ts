@@ -305,20 +305,14 @@ export class Monopoly {
 
     tax() {
         const tax: Tax = this.getCurrentSquare() as Tax;
+        this.getCurrentPlayer().amountOwed = tax.amount;
         if (this.getCurrentPlayer().money >= tax.amount) {
             this.state = "payTax";
         } else if (tax.amount > this.getCurrentPlayer().assets()) {
             this.state = "loseTax";
         } else {
-            this.getCurrentPlayer().amountOwed = tax.amount;
             this.state = "mortgageTax";
         }
-    }
-
-    payTax() {
-        const tax: Tax = this.getCurrentSquare() as Tax;
-        this.getCurrentPlayer().money -= tax.amount;
-        this.state = "endTurn";
     }
 
     payBank() {

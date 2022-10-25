@@ -257,7 +257,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
             <>
             <MessageText>{name} landed on {tax.name}</MessageText>
             <MessageText>{name} must pay ${tax.amount}</MessageText>
-            <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.payTax()})}>Pay</Button></ButtonWrapper>
+            <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.payBank()})}>Pay</Button></ButtonWrapper>
             </>
         )
     } else if (gameState == "loseTax") {
