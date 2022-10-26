@@ -11,7 +11,7 @@ import { SPEEDING_DOUBLES, JAIL_PRICE, COMMUNITY_SERVICE_PAYMENT, PLAYER_COLORS 
 type GameState = "needPlayers" | "rollForFirst" | "start" | "roll" | "inJail" | "won" | "speeding" | "square" | "ownedSquare" | 
     "buySquare" | "onOwnedSquare" | "cannotAffordSquare" | "paySquareRent" | "boughtSquare" |
     "mortgageRent" | "mortgageTax" | "loseSquareRent" | "loseTax" | "payTax" | 
-    "endTurn" | "move" | 
+    "endTurn" | "move" | "firstChoice" | "mortgageFirst" | "buyHouses" |
     "payCommunityService" | "mortgageCommunityService" | "readCard" |
     "passedGo" | "tax" | "communityChest" | "chance" | "go" | "justVisiting" |
     "freeParking" | "goToJail" | "failedRollDoublesGetOutOfJail";
@@ -70,6 +70,10 @@ export class Monopoly {
             }))
         }
         this.state = "rollForFirst";
+        this.players[0].properties.push(properties[0]);
+        this.players[0].properties.push(properties[1]);
+        properties[0].ownedBy = this.players[0];
+        properties[1].ownedBy = this.players[0];
     }
 
     rollDice() {
@@ -113,6 +117,16 @@ export class Monopoly {
             this.state = "won";
         } else if (this.getCurrentPlayer().inJail) {
             this.state = "inJail";
+        } else {
+            this.firstChoice();
+        }
+    }
+
+    firstChoice() {
+        if (this.getCurrentPlayer().properties.length > 0 ||
+            this.getCurrentPlayer().utilities.length > 0 ||
+            this.getCurrentPlayer().transportations.length > 0) {
+                this.state = "firstChoice";
         } else {
             this.state = "roll";
         }
@@ -253,6 +267,13 @@ export class Monopoly {
         this.state = "endTurn";
     }
 
+    buyHouse(propertyName: string) {
+        const property = this.getCurrentPlayer().properties.find((property) => property.name == propertyName)!;
+        property.houses++;
+        this.getCurrentPlayer().money -= property.pricePerHouse;
+        this.firstChoice();
+    }
+
     payRent() {
         const rent = this.getCurrentPlayer().amountOwed;
         this.getCurrentPlayer().owesOtherPlayer!.money += rent;
@@ -263,15 +284,28 @@ export class Monopoly {
     sellSquare(square: Property | Transportation | Utility) {
         this.getCurrentPlayer().money += square.mortgage;
         square.ownedBy = null;
+        this.updateStateAfterMortgage();
+    }
+
+    updateStateAfterMortgage() {
         if (this.getCurrentPlayer().money >= this.getCurrentPlayer().amountOwed) {
             if (this.state == "mortgageRent") {
                 this.state = "paySquareRent";
-            } else if (this.state = "mortgageTax") {
+            } else if (this.state == "mortgageTax") {
                 this.state = "payTax";
             } else if (this.state == "mortgageCommunityService") {
                 this.state = "payCommunityService";
+            } else if (this.state == "mortgageFirst") {
+                this.firstChoice();
             }
         }
+    }
+
+    sellHouse(propertyName: string) {
+        const property = this.getCurrentPlayer().properties.find((property) => property.name == propertyName)!;
+        property.ownedBy!.money += property.pricePerHouse;
+        property.houses--;
+        this.updateStateAfterMortgage();
     }
 
     sellProperty(propertyName: string) {

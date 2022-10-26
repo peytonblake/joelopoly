@@ -3,7 +3,7 @@ import { Property } from './properties';
 import monopoly from './monopoly';
 import { Transportation } from './transportations';
 import { Utility } from './utilities';
-import { PLAYER_COLORS, TURNS_IN_JAIL } from './constants';
+import { MAX_HOUSES, PLAYER_COLORS, TURNS_IN_JAIL } from './constants';
 
 export interface PlayerInit {
     color: string;
@@ -82,6 +82,19 @@ export class Player {
             transportation.ownedBy = null;
         }
         this.alive = false;
+    }
+
+    propertiesCanBuyHousesFor() {
+        const canBuyProperties: Property[] = [];
+        for (const property of this.properties) {
+            if (property.groupHasSameOwner() && 
+                this.money >= property.pricePerHouse &&
+                property.houses < MAX_HOUSES &&
+                property.houses <= Math.min(...property.groupProperties.map((property) => property.houses))) {
+                    canBuyProperties.push(property);
+            } 
+        }
+        return canBuyProperties;
     }
 }
 

@@ -17,6 +17,11 @@ function squareName(square: Property | Transportation | Utility) {
     }
 }
 
+function houseName(houseNum: number) {
+    const houseNames = ['1st House', '2nd House', '3rd House', '4th House', 'Hotel']
+    return houseNames[houseNum - 1];
+}
+
 export default function MonopolyDisplay(props: {redraw: Function}) {
     const [gameState, setGameState] = useState(monopoly.getState());
     const [die1, setDie1] = useState(monopoly.die1);
@@ -24,9 +29,6 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
 
     const ai = monopoly.getCurrentPlayer().ai;
     const name = monopoly.getCurrentPlayer().name;
-
-    console.log("Name?", monopoly.getCurrentPlayer().name);
-    console.log("Is ai?", ai);
 
     function buttonWrapper(action: Function) {
         return () => {
@@ -43,15 +45,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
 
     function Mortgage() {
         if (ai) {
-            if (monopoly.getCurrentPlayer().properties.length > 0) {
-                const property = monopoly.getCurrentPlayer().properties[0];
-                return (
-                    <>
-                    <MessageText>{name} will mortgage {squareName(property)}</MessageText>
-                    <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellProperty(property.name)})}>Mortgage</Button></ButtonWrapper>
-                    </>
-                )
-            } else if (monopoly.getCurrentPlayer().transportations.length > 0) {
+            if (monopoly.getCurrentPlayer().transportations.length > 0) {
                 const transportation = monopoly.getCurrentPlayer().transportations[0];
                 return (
                     <>
@@ -59,7 +53,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
                     <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellTransportation(transportation.name)})}>Mortgage</Button></ButtonWrapper>
                     </>
                 )
-            } else {
+            } else if (monopoly.getCurrentPlayer().utilities.length > 0) {
                 const utility = monopoly.getCurrentPlayer().utilities[0];
                 return (
                     <>
@@ -67,14 +61,43 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
                     <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellUtility(utility.name)})}>Mortgage</Button></ButtonWrapper>
                     </>
                 )
-            }
+            } else {
+                const propsWithHouses = monopoly.getCurrentPlayer().propertiesCanBuyHousesFor();
+                for (const property of monopoly.getCurrentPlayer().properties) {
+                    if (!propsWithHouses.includes(property)) {
+                        return (
+                            <>
+                            <MessageText>{name} will mortgage {squareName(property)}</MessageText>
+                            <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellProperty(property.name)})}>Mortgage</Button></ButtonWrapper>
+                            </>
+                        )
+                    }
+                }
+                const property = monopoly.getCurrentPlayer().properties[0];
+                return (
+                    <>
+                    <MessageText>{name} will sell a house on {squareName(property)}</MessageText>
+                    <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellHouse(property.name)})}>Sell</Button></ButtonWrapper>
+                    </>
+                ) 
+            } 
         } else {
             return (
                 <>
                 {monopoly.getCurrentPlayer().properties.map((property) => (
                     <>
-                    <MessageText>Mortgage {squareName(property)} for ${property.mortgage}</MessageText>
-                    <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellProperty(property.name)})}>Mortgage</Button></ButtonWrapper>
+                    {property.houses == 0 && Math.max(...property.groupProperties.map((property) => property.houses)) == 0 &&
+                        <>
+                        <MessageText>Mortgage {squareName(property)} for ${property.mortgage}</MessageText>
+                        <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellProperty(property.name)})}>Mortgage</Button></ButtonWrapper>
+                        </>
+                    }
+                    {property.houses > 0 && property.houses >= Math.max(...property.groupProperties.map((property) => property.houses)) &&
+                        <>
+                        <MessageText>Sell {houseName(property.houses)} on {squareName(property)} for ${property.pricePerHouse}</MessageText>
+                        <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellHouse(property.name)})}>Sell</Button></ButtonWrapper>
+                        </>
+                    }
                     </>
                 ))}
                 {monopoly.getCurrentPlayer().transportations.map((transportation) => (
@@ -110,6 +133,52 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
                 <ButtonWrapper><Button to="/" onClick={() => {monopoly.won()}}>Done</Button></ButtonWrapper>
             </>
         )
+    } else if (gameState == "firstChoice") {
+        const canBuyHouses = monopoly.getCurrentPlayer().propertiesCanBuyHousesFor().length > 0;
+        if (ai) {
+            buttonWrapper(() => {monopoly.state = canBuyHouses ? "buyHouses" : "roll"})();     
+        } else {
+            display = (
+                <>
+                <MessageText>What would you like to do?</MessageText>
+                <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state="roll"})}>Roll</Button></ButtonWrapper>
+                <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state="mortgageFirst"})}>Mortgage</Button></ButtonWrapper>
+                {canBuyHouses && 
+                    <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state="buyHouses"})}>Buy</Button></ButtonWrapper>
+                }       
+                </>
+            )
+        }
+    } else if (gameState == "mortgageFirst") {
+        display = (
+            <>
+            <MessageText>What would you like to mortgage?</MessageText>
+            <Mortgage/>
+            <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state="firstChoice"})}>Back</Button></ButtonWrapper>
+            </>
+        )
+    } else if (gameState == "buyHouses") {
+        if (ai) {
+            const property = monopoly.getCurrentPlayer().propertiesCanBuyHousesFor()[0];
+            display = (
+                <>
+                <MessageText>{name} will buy the {houseName(property.houses + 1)} for {squareName(property)}</MessageText>
+                <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.buyHouse(property.name)})}>Buy</Button></ButtonWrapper>
+                </>
+            )
+        } else {
+            display = (
+                <>
+                {monopoly.getCurrentPlayer().propertiesCanBuyHousesFor().map((property) => 
+                    <>
+                    <MessageText>Buy {houseName(property.houses + 1)} for {squareName(property)} for ${property.pricePerHouse}</MessageText>
+                    <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.buyHouse(property.name)})}>Buy</Button></ButtonWrapper>
+                    </>
+                )}
+                <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.state = "firstChoice"})}>Back</Button></ButtonWrapper>
+                </>
+            )
+        }
     } else if (gameState == "inJail") {
         const turns = monopoly.getCurrentPlayer().turnsInJail;
         const turnsMsg = `${name} is in jail for ${turns} more turn${turns > 1 ? 's' : ''}`;
@@ -286,7 +355,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
                 <>
                 <MessageText>{name} passed Go</MessageText>
                 <MessageText>{name} will collect ${AI_GO_BONUS}</MessageText>
-                <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.passedGo()})}>Next</Button></ButtonWrapper>
+                <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.getCurrentPlayer().money += AI_GO_BONUS; monopoly.passedGo()})}>Next</Button></ButtonWrapper>
                 </>
             ) 
         } else {
