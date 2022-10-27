@@ -110,6 +110,11 @@ export const ButtonWrapper = styled.div`
   margin-bottom: 10vh;
 `;
 
+export const MessageText = styled.h1`
+  color: #fef9f3;
+  font-size: 1rem;
+`;
+
 export const EventContainer = styled.div`
   color: #2c3325;
   display: flex;

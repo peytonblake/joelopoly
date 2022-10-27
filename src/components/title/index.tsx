@@ -10,6 +10,7 @@ import {
 } from './title';
 import { Button } from '../button';
 import numPlayers from '../../game/numPlayers';
+import monopoly from '../../game/monopoly';
 
 const MIN_TOTAL_PLAYERS: number = 2;
 const MAX_TOTAL_PLAYERS: number = 4;
@@ -63,7 +64,9 @@ const Title = () => {
         </TitleContainer>
         {SelectNumPlayers(numHumanPlayers, setNumHumanPlayers, numAIPlayers, setNumAIPlayers)}
         <ButtonWrapper>
-          <Button to={numHumanPlayers > 0 ? "/color" : "/turn"}>START</Button>
+          <Button to={numHumanPlayers > 0 ? "/color" : "/turn"} onClick={() => {
+            if (numHumanPlayers == 0) {monopoly.setUpPlayers([], numAIPlayers)}
+            }}>START</Button>
         </ButtonWrapper>
       </TitleScreenContainer>
     </>

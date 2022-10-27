@@ -13,6 +13,7 @@ export class Utility {
     mortgage: number;
     rentMultipliers: number[];
     otherUtility: Utility | null = null;
+    dieTotal;
 
     constructor(name: string, location: number, price: number, mortgage: number, rentMultipliers: number[]) {
         this.name = name;
@@ -20,13 +21,14 @@ export class Utility {
         this.price = price;
         this.mortgage = mortgage;
         this.rentMultipliers = rentMultipliers;
+        this.dieTotal = 0;
     }
 
     getRent() {
         if (this.otherUtility!.ownedBy == this.ownedBy) {
-            return this.rentMultipliers[1];
+            return this.rentMultipliers[1] * this.dieTotal;
         }
-        return this.rentMultipliers[0];
+        return this.rentMultipliers[0] * this.dieTotal;
     }
 }
 

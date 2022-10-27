@@ -53,7 +53,15 @@ export class Property {
     }
 
     groupHasSameOwner() {
-        return false;  // todo
+        if (this.ownedBy == null) {
+            return false;
+        }
+        for (const property of this.groupProperties) {
+            if (property.ownedBy != this.ownedBy) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 
