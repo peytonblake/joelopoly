@@ -137,7 +137,7 @@ const WhackAMole: React.FC = () => {
     for (var i = 0; i < moles.length; i++) {
       if(!(
         ((p5.mouseY + 65) < (moles[i].y)) ||
-        (p5.mouseY + 65 > (moles[i].y + moles[i].h)) ||
+        (p5.mouseY + 65 > (moles[i].y + moles[i].h + 40)) ||
         ((p5.mouseX - 110) < moles[i].x) ||
         (p5.mouseX - 110 > (moles[i].x + moles[i].w))
       )) {
