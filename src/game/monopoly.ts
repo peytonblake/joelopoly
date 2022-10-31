@@ -70,10 +70,6 @@ export class Monopoly {
             }))
         }
         this.state = "rollForFirst";
-        this.players[0].properties.push(properties[0]);
-        this.players[0].properties.push(properties[1]);
-        properties[0].ownedBy = this.players[0];
-        properties[1].ownedBy = this.players[0];
     }
 
     rollDice() {
