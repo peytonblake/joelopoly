@@ -27,96 +27,105 @@ import Hiking from '../../images/attractions/hiking.png';
 import Caving from '../../images/attractions/caving.png';
 import Kayaking from '../../images/attractions/kayaking.png';
 import Rafting from '../../images/attractions/rafting.png';
-import { CardWrapper } from './game';
+import { CardWrapper, SideInfoCardWrapper } from './game';
 
-export default function CardGetter(cardName: string) {
+
+function getCard(cardName: string) {
   switch (cardName) {
     case 'Badlands': {
-      return <CardWrapper src={Badlands} alt={cardName} />;
+      return Badlands;
     }
     case 'Biscayne': {
-      return <CardWrapper src={Biscayne} alt={cardName} />;
+      return Biscayne;
     }
     case 'Bryce Canyon': {
-      return <CardWrapper src={Bryce_Canyon} alt={cardName} />;
+      return Bryce_Canyon;
     }
     case 'Carlsbad Caverns': {
-      return <CardWrapper src={Carlsbad_Caverns} alt={cardName} />;
+      return Carlsbad_Caverns;
     }
     case 'Crater Lake': {
-      return <CardWrapper src={Crater_Lake} alt={cardName} />;
+      return Crater_Lake;
     }
     case 'Dry Tortugas': {
-      return <CardWrapper src={Dry_Tortugas} alt={cardName} />;
+      return Dry_Tortugas;
     }
     case 'Everglades': {
-      return <CardWrapper src={Everglades} alt={cardName} />;
+      return Everglades;
     }
     case 'Grand Canyon': {
-      return <CardWrapper src={Grand_Canyon} alt={cardName} />;
+      return Grand_Canyon;
     }
     case 'Grand Teton': {
-      return <CardWrapper src={Grand_Teton} alt={cardName} />;
+      return Grand_Teton;
     }
     case 'Guadalupe Mountains': {
-      return <CardWrapper src={Guadalupe_Mountains} alt={cardName} />;
+      return Guadalupe_Mountains;
     }
     case 'Kings Canyon': {
-      return <CardWrapper src={Kings_Canyon} alt={cardName} />;
+      return Kings_Canyon;
     }
     case 'Lassen Volcanic': {
-      return <CardWrapper src={Lassen_Volcanic} alt={cardName} />;
+      return Lassen_Volcanic;
     }
     case 'Mount Rainier': {
-      return <CardWrapper src={Mount_Rainier} alt={cardName} />;
+      return Mount_Rainier;
     }
     case 'North Cascades': {
-      return <CardWrapper src={North_Cascades} alt={cardName} />;
+      return North_Cascades;
     }
     case 'Olympic': {
-      return <CardWrapper src={Olympic} alt={cardName} />;
+      return Olympic;
     }
     case 'Redwood': {
-      return <CardWrapper src={Redwood} alt={cardName} />;
+      return Redwood;
     }
     case 'Sequoia': {
-      return <CardWrapper src={Sequoia} alt={cardName} />;
+      return Sequoia;
     }
     case 'White Sands': {
-      return <CardWrapper src={White_Sands} alt={cardName} />;
+      return White_Sands;
     }
     case 'Wind Cave': {
-      return <CardWrapper src={Wind_Cave} alt={cardName} />;
+      return Wind_Cave;
     }
     case 'Yellowstone': {
-      return <CardWrapper src={Yellowstone} alt={cardName} />;
+      return Yellowstone;
     }
     case 'Yosemite': {
-      return <CardWrapper src={Yosemite} alt={cardName} />;
+      return Yosemite;
     }
     case 'Zion': {
-      return <CardWrapper src={Zion} alt={cardName} />;
+      return Zion;
     }
     case 'Flashlight Batteries': {
-      return <CardWrapper src={Flashlight} alt={cardName} />;
+      return Flashlight;
     }
     case 'Water Filter': {
-      return <CardWrapper src={Water} alt={cardName} />;
+      return Water;
     }
     case 'Hiking': {
-      return <CardWrapper src={Hiking} alt={cardName} />;
+      return Hiking;
     }
     case 'Caving': {
-      return <CardWrapper src={Caving} alt={cardName} />;
+      return Caving;
     }
     case 'Kayaking': {
-      return <CardWrapper src={Kayaking} alt={cardName} />;
+      return Kayaking;
     }
     case 'Rafting': {
-      return <CardWrapper src={Rafting} alt={cardName} />;
+      return Rafting;
     }
     default: {
-      return <CardWrapper src={Zion} alt={cardName} />;
+      return Zion;
     }
   }
+}
+
+export function SideInfoCardGetter(cardName: string, maxWidth: number) {
+  return <SideInfoCardWrapper src={getCard(cardName)} alt={cardName} maxWidth={maxWidth}/>;
+}
+
+export default function CardGetter(cardName: string) {
+  return <CardWrapper src={getCard(cardName)} alt={cardName} />;
 }
