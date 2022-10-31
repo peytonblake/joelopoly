@@ -167,6 +167,15 @@ const meetJoel = new Card(
     }
 )
 
+const helpPoor = new Card(
+    "helpPoor",
+    "The rich should help the poor",
+    "The richest player must give $100 to the poorest player",
+    () => {
+        // TODO
+    }
+)
+
 export const chanceCards = [trespassing, bigFoot, lowSupplies, forgotWater, adventure, littering, lostChild];
-export const communityChestCards = [freePass, discovery, communityService, turnedAround, meetJoel];
+export const communityChestCards = [freePass, discovery, communityService, turnedAround, meetJoel, helpPoor];
 
