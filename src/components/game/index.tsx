@@ -33,7 +33,7 @@ function displayInfo() {
   )
 }
 
-function getDiceImage(die: number) {
+export function getDiceImage(die: number) {
   switch(die) {
     case 1: { return <DieWrapper src={Dice1} alt="1" /> }
     case 2: { return <DieWrapper src={Dice2} alt="2" /> }
