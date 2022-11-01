@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AI_GO_BONUS, JAIL_PRICE, MINIGAME_PAGES, RICH_HELP_POOR_AMOUNT } from '../../game/constants';
 import { Property } from '../../game/properties';
 import { Transportation } from '../../game/transportations';
@@ -27,6 +27,10 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
     const [die1, setDie1] = useState(monopoly.die1);
     const [die2, setDie2] = useState(monopoly.die2);
 
+    useEffect(() => {
+        props.redraw();
+    }, [gameState])
+
     const ai = monopoly.getCurrentPlayer().ai;
     const name = monopoly.getCurrentPlayer().name;
 
@@ -39,7 +43,6 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
             setGameState(monopoly.getState());
             setDie1(monopoly.die1);
             setDie2(monopoly.die2);
-            props.redraw();
         }
     }
 

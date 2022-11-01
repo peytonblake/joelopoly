@@ -11,7 +11,7 @@ const Turn = () => {
         <StartText>Roll to see who goes first!</StartText>
         <ResultsWrapper>
           {monopoly.rollForFirst().map((roll, i) => (
-            <div>
+            <div key={i}>
             <StartText>{monopoly.players[i].name}</StartText>
             {getDiceImage(roll)}
             </div>

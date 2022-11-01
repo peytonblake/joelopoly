@@ -21,7 +21,7 @@ const Color = () => {
         </ColorChooseContainer>
         <ColorButtonContainer>
           {availableColors.map(
-            (color, i) => <ColorButton onClick={() => setActiveColor(i)} active={activeColor == i} color={color}/>
+            (color, i) => <ColorButton key={i} onClick={() => setActiveColor(i)} active={activeColor == i} color={color}/>
           )}
         </ColorButtonContainer>
         <ButtonWrapper>

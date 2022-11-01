@@ -37,15 +37,13 @@ function displayInfo() {
     <>
     <SidebarWrapper>
       {monopoly.players.map((player: Player) => (player.alive && 
-        <>
-        <SideInfoBox active={player == monopoly.getCurrentPlayer()}>
+        <SideInfoBox key={player.name} active={player == monopoly.getCurrentPlayer()}>
           <SideInfoBoxLine>
             <SideInfo first={true}><SideInfoText color={player.color}>{player.name}</SideInfoText></SideInfo>
             <SideInfo first={false}><SideInfoText color="#2c3325">${player.money}</SideInfoText></SideInfo>
           </SideInfoBoxLine>
           {displayOwnedCards(player, 40)}
         </SideInfoBox>
-        </>
       ))}
     </SidebarWrapper>
     </>

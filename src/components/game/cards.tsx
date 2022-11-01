@@ -123,7 +123,7 @@ function getCard(cardName: string) {
 }
 
 export function SideInfoCardGetter(cardName: string, maxWidth: number) {
-  return <SideInfoCardWrapper src={getCard(cardName)} alt={cardName} maxWidth={maxWidth}/>;
+  return <SideInfoCardWrapper key={cardName} src={getCard(cardName)} alt={cardName} maxWidth={maxWidth}/>;
 }
 
 export default function CardGetter(cardName: string) {
