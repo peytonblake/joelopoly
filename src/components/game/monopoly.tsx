@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { AI_GO_BONUS, JAIL_PRICE, MINIGAME_PAGES } from '../../game/constants';
+import { AI_GO_BONUS, JAIL_PRICE, MINIGAME_PAGES, RICH_HELP_POOR_AMOUNT } from '../../game/constants';
 import { Property } from '../../game/properties';
 import { Transportation } from '../../game/transportations';
 import { Utility } from '../../game/utilities';
@@ -44,39 +44,40 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
     }
 
     function Mortgage() {
-        if (ai) {
-            if (monopoly.getCurrentPlayer().transportations.length > 0) {
-                const transportation = monopoly.getCurrentPlayer().transportations[0];
+        const player = monopoly.getMortgagePlayer();
+        if (player.ai) {
+            if (player.transportations.length > 0) {
+                const transportation = player.transportations[0];
                 return (
                     <>
-                    <MessageText>{name} will mortgage {squareName(transportation)}</MessageText>
+                    <MessageText>{player.name} will mortgage {squareName(transportation)}</MessageText>
                     <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellTransportation(transportation.name)})}>Mortgage</Button></ButtonWrapper>
                     </>
                 )
-            } else if (monopoly.getCurrentPlayer().utilities.length > 0) {
-                const utility = monopoly.getCurrentPlayer().utilities[0];
+            } else if (player.utilities.length > 0) {
+                const utility = player.utilities[0];
                 return (
                     <>
-                    <MessageText>{name} will mortgage {squareName(utility)}</MessageText>
+                    <MessageText>{player.name} will mortgage {squareName(utility)}</MessageText>
                     <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellUtility(utility.name)})}>Mortgage</Button></ButtonWrapper>
                     </>
                 )
             } else {
-                const propsWithHouses = monopoly.getCurrentPlayer().propertiesCanBuyHousesFor();
-                for (const property of monopoly.getCurrentPlayer().properties) {
+                const propsWithHouses = player.propertiesCanBuyHousesFor();
+                for (const property of player.properties) {
                     if (!propsWithHouses.includes(property)) {
                         return (
                             <>
-                            <MessageText>{name} will mortgage {squareName(property)}</MessageText>
+                            <MessageText>{player.name} will mortgage {squareName(property)}</MessageText>
                             <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellProperty(property.name)})}>Mortgage</Button></ButtonWrapper>
                             </>
                         )
                     }
                 }
-                const property = monopoly.getCurrentPlayer().properties[0];
+                const property = player.properties[0];
                 return (
                     <>
-                    <MessageText>{name} will sell a house on {squareName(property)}</MessageText>
+                    <MessageText>{player.name} will sell a house on {squareName(property)}</MessageText>
                     <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellHouse(property.name)})}>Sell</Button></ButtonWrapper>
                     </>
                 ) 
@@ -84,7 +85,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
         } else {
             return (
                 <>
-                {monopoly.getCurrentPlayer().properties.map((property) => (
+                {player.properties.map((property) => (
                     <>
                     {property.houses == 0 && Math.max(...property.groupProperties.map((property) => property.houses)) == 0 &&
                         <>
@@ -100,13 +101,13 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
                     }
                     </>
                 ))}
-                {monopoly.getCurrentPlayer().transportations.map((transportation) => (
+                {player.transportations.map((transportation) => (
                     <>
                     <MessageText>Mortgage {squareName(transportation)} for ${transportation.mortgage}</MessageText>
                     <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellTransportation(transportation.name)})}>Mortgage</Button></ButtonWrapper>
                     </>
                 ))}
-                {monopoly.getCurrentPlayer().utilities.map((utility) => (
+                {player.utilities.map((utility) => (
                     <>
                     <MessageText>Mortgage {squareName(utility)} for ${utility.mortgage}</MessageText>
                     <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.sellUtility(utility.name)})}>Mortgage</Button></ButtonWrapper>
@@ -439,6 +440,34 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
                 <MessageText>{name} cannot afford the community service tax</MessageText>
                 <MessageText>{name} must mortgage owned squares</MessageText>
                 <Mortgage/>
+            </>
+        )
+    } else if (gameState == "richHelpPoor") {
+        const richestPlayer = monopoly.getRichestPlayer();
+        const poorestPlayer = monopoly.getPoorestPlayer();
+        display = (
+            <>
+            <MessageText>The rich should help the poor</MessageText>
+            <MessageText>{richestPlayer.name} will give ${RICH_HELP_POOR_AMOUNT} to {poorestPlayer.name}</MessageText>
+            <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.richHelpPoor()})}>Give</Button></ButtonWrapper>
+            </>
+        )
+    } else if (gameState == "mortgageRichHelpPoor") {
+        const richestPlayer = monopoly.getRichestPlayer();
+        display = (
+            <>
+            <MessageText>{richestPlayer.name} cannot afford to give ${RICH_HELP_POOR_AMOUNT}</MessageText>
+            <MessageText>{richestPlayer.name} must mortgage owned squares</MessageText>
+            <Mortgage/>
+            </>
+        )
+    } else if (gameState == "loseRichHelpPoor") {
+        const richestPlayer = monopoly.getRichestPlayer();
+        display = (
+            <>
+            <MessageText>{richestPlayer.name} cannot give ${RICH_HELP_POOR_AMOUNT}</MessageText>
+            <MessageText>{richestPlayer.name} loses!</MessageText>
+            <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {monopoly.loseRichestPlayer()})}>End Turn</Button></ButtonWrapper>
             </>
         )
     }

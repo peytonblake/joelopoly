@@ -60,6 +60,7 @@ export class Player {
     assets() {
         let assets = this.money;
         for (const property of this.properties) {
+            assets += property.pricePerHouse * property.houses;
             assets += property.mortgage;
         }
         for (const utility of this.utilities) {
@@ -73,6 +74,7 @@ export class Player {
 
     lose() {
         for (const property of this.properties) {
+            property.houses = 0;
             property.ownedBy = null;
         }
         for (const utility of this.utilities) {

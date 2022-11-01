@@ -1,4 +1,4 @@
-import { COMMUNITY_SERVICE_PAYMENT } from './constants';
+import { COMMUNITY_SERVICE_PAYMENT, RICH_HELP_POOR_AMOUNT } from './constants';
 import monopoly from './monopoly';
 import properties from './properties';
 
@@ -138,6 +138,7 @@ const communityService = new Card(
     "Give each player $20",
     () => {
         const totalPayout = COMMUNITY_SERVICE_PAYMENT * monopoly.players.filter((player) => player.alive).length;
+        monopoly.getCurrentPlayer().amountOwed = totalPayout;
         if (monopoly.getCurrentPlayer().money >= totalPayout) {
             monopoly.state = "payCommunityService";
         } else if (totalPayout > monopoly.getCurrentPlayer().assets()) {
@@ -170,12 +171,19 @@ const meetJoel = new Card(
 const helpPoor = new Card(
     "helpPoor",
     "The rich should help the poor",
-    "The richest player must give $100 to the poorest player",
+    `The richest player must give $${RICH_HELP_POOR_AMOUNT} to the poorest player`,
     () => {
-        // TODO
+        const richestPlayer = monopoly.getRichestPlayer();
+        richestPlayer.amountOwed = RICH_HELP_POOR_AMOUNT;
+        if (richestPlayer.money >= RICH_HELP_POOR_AMOUNT) {
+            monopoly.state = "richHelpPoor"
+        }  else if (richestPlayer.assets() < RICH_HELP_POOR_AMOUNT) {
+            monopoly.state = "loseRichHelpPoor";
+        } else {
+            monopoly.state = "mortgageRichHelpPoor";
+        }
     }
 )
 
 export const chanceCards = [trespassing, bigFoot, lowSupplies, forgotWater, adventure, littering, lostChild];
 export const communityChestCards = [freePass, discovery, communityService, turnedAround, meetJoel, helpPoor];
-

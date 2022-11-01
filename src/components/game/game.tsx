@@ -9,6 +9,14 @@ interface divSideInfoCard {
   maxWidth: number;
 }
 
+interface active {
+  active: boolean;
+}
+
+interface color {
+  color: string;
+}
+
 export const Button = styled(Link)`
   border-radius: 30px;
   background: #ba8c4e;
@@ -38,13 +46,14 @@ export const SidebarWrapper = styled.div`
   justify-content: space-evenly;
 `;
 
-export const SideInfoBox = styled.div`
+export const SideInfoBox = styled.div<active>`
   background: #cde6d0;
   height: 24vh;
   width: 100vh;
   max-width: 40vh;
   display: flex;
   flex-direction: column;
+  border: 8px solid ${({active}) => (active ? '#85ff00' : '#cde6d0')}
 `;
 
 export const SideInfoBoxLine = styled.div`
@@ -68,8 +77,8 @@ export const SideInfo = styled.div<divI>`
   margin-left: ${({ first }) => (first ? '10px' : '0px')};
 `;
 
-export const SideInfoText = styled.h1`
-  color: #2c3325;
+export const SideInfoText = styled.h1<color>`
+  color: ${({color}) => color};
   font-weight: bold;
   line-height: 20px;
   font-size: 2rem;

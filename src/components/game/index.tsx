@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import monopoly from '../../game/monopoly';
 import MonopolyDisplay from './monopoly';
 import { Player } from '../../game/players';
-import { Property } from '../../game/properties';
 import { GameWrapper, SidebarWrapper, RollWrapper, DieWrapper, MiddleWrapper, 
          TitleText, BoardWrapper, RightWrapper, 
          SideInfoBox, SideInfo, SideInfoText, SideInfoBoxLine } from './game';
@@ -31,34 +30,18 @@ function displayOwnedCards(player: Player, maxWidth: number) {
       {cardNames.map((cardName) => SideInfoCardGetter(cardName, maxWidth / cardNames.length))}
     </SideInfoBoxLine>
   )
-  /*
-  const cardLines = []
-  for (let line = 0; line < Math.ceil(cardNames.length / cardsPerLine); line++) {
-    const start = line * cardsPerLine;
-    const end  = Math.min(start + cardsPerLine, cardNames.length);
-    cardLines.push(
-      <SideInfoBoxLine>
-        {cardNames.slice(start, end).map((cardName) => SideInfoCardGetter(cardName))}
-      </SideInfoBoxLine>
-    )
-  }
-  return <>{cardLines}</>
-  */
 }
 
 function displayInfo() {
   return (
     <>
     <SidebarWrapper>
-      {monopoly.players.map((player: Player) => (
+      {monopoly.players.map((player: Player) => (player.alive && 
         <>
-        <SideInfoBox>
+        <SideInfoBox active={player == monopoly.getCurrentPlayer()}>
           <SideInfoBoxLine>
-            <SideInfo first={true}><SideInfoText>{player.name}</SideInfoText></SideInfo>
-            <SideInfo first={false}><SideInfoText>${player.money}</SideInfoText></SideInfo>
-          </SideInfoBoxLine>
-          <SideInfoBoxLine>
-            <SideInfo first={true}><SideInfoText>Location: {player.location}</SideInfoText></SideInfo>
+            <SideInfo first={true}><SideInfoText color={player.color}>{player.name}</SideInfoText></SideInfo>
+            <SideInfo first={false}><SideInfoText color="#2c3325">${player.money}</SideInfoText></SideInfo>
           </SideInfoBoxLine>
           {displayOwnedCards(player, 40)}
         </SideInfoBox>
