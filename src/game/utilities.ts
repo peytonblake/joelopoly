@@ -13,7 +13,7 @@ export class Utility {
     mortgage: number;
     rentMultipliers: number[];
     otherUtility: Utility | null = null;
-    dieTotal;
+    dieTotal: number;
 
     constructor(name: string, location: number, price: number, mortgage: number, rentMultipliers: number[]) {
         this.name = name;

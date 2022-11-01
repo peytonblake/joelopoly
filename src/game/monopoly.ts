@@ -6,7 +6,7 @@ import taxes, { Tax } from './taxes';
 import utilities, { Utility } from './utilities';
 import transportations, { Transportation } from './transportations';
 import { Card, chanceCards, communityChestCards } from './cards';
-import { SPEEDING_DOUBLES, JAIL_PRICE, COMMUNITY_SERVICE_PAYMENT, PLAYER_COLORS } from './constants';
+import { SPEEDING_DOUBLES, JAIL_PRICE, COMMUNITY_SERVICE_PAYMENT, PLAYER_COLORS, RICH_HELP_POOR_AMOUNT } from './constants';
 
 type GameState = "needPlayers" | "rollForFirst" | "start" | "roll" | "inJail" | "won" | "speeding" | "square" | "ownedSquare" | 
     "buySquare" | "onOwnedSquare" | "cannotAffordSquare" | "paySquareRent" | "boughtSquare" |
@@ -14,7 +14,8 @@ type GameState = "needPlayers" | "rollForFirst" | "start" | "roll" | "inJail" | 
     "endTurn" | "move" | "firstChoice" | "mortgageFirst" | "buyHouses" |
     "payCommunityService" | "mortgageCommunityService" | "readCard" |
     "passedGo" | "tax" | "communityChest" | "chance" | "go" | "justVisiting" |
-    "freeParking" | "goToJail" | "failedRollDoublesGetOutOfJail";
+    "freeParking" | "goToJail" | "failedRollDoublesGetOutOfJail" | 
+    "richHelpPoor" | "mortgageRichHelpPoor" | "loseRichHelpPoor";
 
 export class Monopoly {
 
@@ -278,13 +279,14 @@ export class Monopoly {
     }
 
     sellSquare(square: Property | Transportation | Utility) {
-        this.getCurrentPlayer().money += square.mortgage;
+        this.getMortgagePlayer().money += square.mortgage;
         square.ownedBy = null;
         this.updateStateAfterMortgage();
     }
 
     updateStateAfterMortgage() {
-        if (this.getCurrentPlayer().money >= this.getCurrentPlayer().amountOwed) {
+        const player = this.getMortgagePlayer();
+        if (player.money >= player.amountOwed) {
             if (this.state == "mortgageRent") {
                 this.state = "paySquareRent";
             } else if (this.state == "mortgageTax") {
@@ -293,35 +295,41 @@ export class Monopoly {
                 this.state = "payCommunityService";
             } else if (this.state == "mortgageFirst") {
                 this.firstChoice();
+            } else if (this.state == "mortgageRichHelpPoor") {
+                this.state = "richHelpPoor";
             }
         }
     }
 
     sellHouse(propertyName: string) {
-        const property = this.getCurrentPlayer().properties.find((property) => property.name == propertyName)!;
+        const player = this.getMortgagePlayer();
+        const property = player.properties.find((property) => property.name == propertyName)!;
         property.ownedBy!.money += property.pricePerHouse;
         property.houses--;
         this.updateStateAfterMortgage();
     }
 
     sellProperty(propertyName: string) {
-        const property = this.getCurrentPlayer().properties.find((property) => property.name == propertyName)!;
-        const propertyIndex = this.getCurrentPlayer().properties.indexOf(property);
-        this.getCurrentPlayer().properties.splice(propertyIndex, 1);
+        const player = this.getMortgagePlayer();
+        const property = player.properties.find((property) => property.name == propertyName)!;
+        const propertyIndex = player.properties.indexOf(property);
+        player.properties.splice(propertyIndex, 1);
         this.sellSquare(property);
     }
 
     sellTransportation(transportationName: string) {
-        const transportation = this.getCurrentPlayer().transportations.find((t) => t.name == transportationName)!;
-        const transportationIndex = this.getCurrentPlayer().transportations.indexOf(transportation);
-        this.getCurrentPlayer().transportations.splice(transportationIndex, 1);
+        const player = this.getMortgagePlayer();
+        const transportation = player.transportations.find((t) => t.name == transportationName)!;
+        const transportationIndex = player.transportations.indexOf(transportation);
+        player.transportations.splice(transportationIndex, 1);
         this.sellSquare(transportation);
     }
 
     sellUtility(utilityName: string) {
-        const utility = this.getCurrentPlayer().utilities.find((utility) => utility.name == utilityName)!;
-        const utilityIndex = this.getCurrentPlayer().utilities.indexOf(utility);
-        this.getCurrentPlayer().utilities.splice(utilityIndex, 1);
+        const player = this.getMortgagePlayer();
+        const utility = player.utilities.find((utility) => utility.name == utilityName)!;
+        const utilityIndex = player.utilities.indexOf(utility);
+        player.utilities.splice(utilityIndex, 1);
         this.sellSquare(utility);
     }
 
@@ -358,6 +366,7 @@ export class Monopoly {
                 monopoly.getCurrentPlayer().money -= COMMUNITY_SERVICE_PAYMENT;
             }
         }
+        monopoly.getCurrentPlayer().amountOwed = 0;
         this.state = "endTurn";
     }
 
@@ -380,9 +389,26 @@ export class Monopoly {
         this.card!.action();
     }
 
+    richHelpPoor() {
+        const richestPlayer = this.getRichestPlayer();
+        const poorestPlayer = this.getPoorestPlayer();
+        console.log(`Richest player is ${richestPlayer.name}`)
+        richestPlayer.money -= RICH_HELP_POOR_AMOUNT;
+        richestPlayer.amountOwed = 0;
+        poorestPlayer.money += RICH_HELP_POOR_AMOUNT;
+        console.log(`Poorest player is ${poorestPlayer.name}`)
+        this.state = "endTurn";
+    }
+
     lose() {
         // give everything owned back to the bank and set alive to false
         this.getCurrentPlayer().lose();
+        this.state = "endTurn";
+    }
+
+    loseRichestPlayer() {
+        this.getPoorestPlayer().money += this.getRichestPlayer().assets();
+        this.getRichestPlayer().lose();
         this.state = "endTurn";
     }
 
@@ -398,6 +424,33 @@ export class Monopoly {
             this.currentPlayer = (this.currentPlayer + this.turnOrder) % this.players.length;
         }
         this.state = "start";
+    }
+
+    getMortgagePlayer() {
+        if (this.state == "mortgageRichHelpPoor") {
+            return this.getRichestPlayer();
+        }
+        return this.getCurrentPlayer();
+    }
+
+    getRichestPlayer() {
+        let richestPlayer = this.getCurrentPlayer();
+        for (const player of this.players) {
+            if (player.alive && player.money > richestPlayer.money) {
+                richestPlayer = player;
+            }
+        }
+        return richestPlayer;
+    }
+
+    getPoorestPlayer() {
+        let poorestPlayer = this.getCurrentPlayer();
+        for (const player of this.players) {
+            if (player.alive && player.money < poorestPlayer.money) {
+                poorestPlayer = player;
+            }
+        }
+        return poorestPlayer;
     }
 
     getState() {

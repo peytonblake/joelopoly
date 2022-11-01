@@ -5,6 +5,18 @@ interface divI {
   first: boolean;
 }
 
+interface divSideInfoCard {
+  maxWidth: number;
+}
+
+interface active {
+  active: boolean;
+}
+
+interface color {
+  color: string;
+}
+
 export const Button = styled(Link)`
   border-radius: 30px;
   background: #ba8c4e;
@@ -31,28 +43,42 @@ export const SidebarWrapper = styled.div`
   background: #2c3325;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-evenly;
 `;
 
-export const SideInfoBox = styled.div`
+export const SideInfoBox = styled.div<active>`
   background: #cde6d0;
   height: 24vh;
   width: 100vh;
   max-width: 40vh;
   display: flex;
-  flex-direction: row;
-  justify-content: space-betweeen;
+  flex-direction: column;
+  border: 8px solid ${({active}) => (active ? '#85ff00' : '#cde6d0')}
 `;
+
+export const SideInfoBoxLine = styled.div`
+  background: #cde6d0;
+  width: 100vh;
+  max-width: 40vh;
+  display: flex;
+  flex-direction: row;
+`;
+
+export const SideInfoCardWrapper = styled.img<divSideInfoCard>(
+  ({maxWidth}) =>`
+  max-height: 100px;
+  max-width: ${maxWidth}vh;
+`);
 
 export const SideInfo = styled.div<divI>`
   background: #cde6d0;
   width: 100vh;
-  max-width: 20vh;
+  max-width: 40vh;
   margin-left: ${({ first }) => (first ? '10px' : '0px')};
 `;
 
-export const SideInfoText = styled.h1`
-  color: #2c3325;
+export const SideInfoText = styled.h1<color>`
+  color: ${({color}) => color};
   font-weight: bold;
   line-height: 20px;
   font-size: 2rem;

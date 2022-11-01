@@ -31,7 +31,7 @@ function SelectNumPlayers(numHumanPlayers: number, setNumHumanPlayers: React.Dis
       <PlayerWrapper>
         <PlayerText>Number of Human Players</PlayerText>
         {[...Array(MAX_TOTAL_PLAYERS + 1)].map((n, i) => (
-          <PlayerButton onClick={() => {
+          <PlayerButton key={i} onClick={() => {
               setNumHumanPlayers(i);
               const newNumAIPlayers = validNumAIPlayers(i, numAIPlayers); 
               setNumAIPlayers(newNumAIPlayers);
@@ -44,7 +44,7 @@ function SelectNumPlayers(numHumanPlayers: number, setNumHumanPlayers: React.Dis
       <PlayerWrapper>
       <PlayerText>Number of AI Players</PlayerText>
       {[...Array(MAX_TOTAL_PLAYERS + 1)].map((n, i) => (
-        <PlayerButton onClick={() => {setNumAIPlayers(i); numPlayers.numAIPlayers = i}} active={numAIPlayers === i} disabled={i < minAIPlayers || i > maxAIPlayers}>
+        <PlayerButton key={i} onClick={() => {setNumAIPlayers(i); numPlayers.numAIPlayers = i}} active={numAIPlayers === i} disabled={i < minAIPlayers || i > maxAIPlayers}>
           {i}
         </PlayerButton>
       ))}
