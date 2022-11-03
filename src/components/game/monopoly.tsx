@@ -249,7 +249,8 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
             display = (
                 <>
                     <MessageText>{name} landed on {squareName(square)}</MessageText>
-                    <MessageText>This square is unowned, and {name} will buy it for ${square.price}</MessageText>
+                    <MessageText>This square is unowned</MessageText>
+                    <MessageText>{name} will buy it for ${square.price}</MessageText>
                     {CardGetter(square.name)}
                     <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {
                         monopoly.buy();
@@ -261,7 +262,8 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
             display = (
                 <>
                     <MessageText>{name} landed on {squareName(square)}</MessageText>
-                    <MessageText>This square is unowned, but {name} can buy it for ${square.price}</MessageText>
+                    <MessageText>This square is unowned</MessageText>
+                    <MessageText>{name} can buy it for ${square.price}</MessageText>
                     {CardGetter(square.name)}
                     <ButtonWrapper><Button to='/game' onClick={buttonWrapper(() => {
                         monopoly.buy();
