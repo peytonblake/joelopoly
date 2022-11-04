@@ -68,3 +68,14 @@ export const ColorButton = styled.button<ButtonI>`
     box-shadow: 5px 5px 10px 5px rgba(0, 0, 0, 0.5);
   }
 `;
+
+export const SideInfoCardWrapper = styled.img`
+  height: 40% !important;
+  width: auto !important;
+`;
+
+export const RightWrapper = styled.div`
+  justify-content: space-between !important;
+  height: 90vh !important;
+  margin: 5vh 2vh 5vh 0 !important;
+`;

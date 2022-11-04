@@ -93,6 +93,7 @@ export const RollWrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
   width: 40vh;
+  margin-top: 5%;
 `;
 
 export const DieWrapper = styled.img`
@@ -124,16 +125,18 @@ export const BoardWrapper = styled.img`
 
 export const RightWrapper = styled.div`
   color: #2c3325;
-  height: 100vh;
+  height: 90vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
-  margin-right: 10px;
+  margin: 5vh 2vh 5vh 0vh;
+  overflow-y: auto;
 `;
 
 export const ButtonWrapper = styled.div`
-  margin-bottom: 10vh;
+  margin-bottom: 5%;
+  height: 12%;
 `;
 
 export const MessageText = styled.h1`
@@ -155,16 +158,16 @@ export const EventText = styled.h1`
 `;
 
 export const CardWrapper = styled.img`
-  height: 100vh;
+  height: 40%;
   max-height: 445px;
-  width: 100vh;
+  width: auto;
   max-width: 191px;
 `;
 
 export const CardPlaceholder = styled.div`
   background: #2c3325;
-  height: 100vh;
+  height: 40%;
   max-height: 445px;
-  width: 100vh;
+  width: auto;
   max-width: 191px;
 `;
