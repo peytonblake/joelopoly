@@ -168,3 +168,14 @@ export const CardPlaceholder = styled.div`
   width: 100vh;
   max-width: 191px;
 `;
+
+export const HouseContainer = styled.div`
+  position: relative;
+  left: 38%;
+  bottom: 14%
+`;
+
+export const HouseWrapper = styled.img`
+  max-height: 1.5vh;
+  max-width: 1.5vh
+`;

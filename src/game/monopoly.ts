@@ -412,16 +412,21 @@ export class Monopoly {
         this.state = "endTurn";
     }
 
+    nextPlayer() {
+        return (this.currentPlayer + this.turnOrder + this.players.length) % this.players.length;
+    }
+
     endTurn() {
         // if it should be the next player's turn
         if (this.doublesRolled == 0 || this.doublesRolled == SPEEDING_DOUBLES ||
             !this.getCurrentPlayer().alive || this.getCurrentPlayer().inJail) {
             this.doublesRolled = 0;
-            this.currentPlayer = (this.currentPlayer + this.turnOrder) % this.players.length;
+            this.currentPlayer = this.nextPlayer();
         }
         // continue until there is an active player
         while (!this.getCurrentPlayer().alive) {
-            this.currentPlayer = (this.currentPlayer + this.turnOrder) % this.players.length;
+            this.doublesRolled = 0;
+            this.currentPlayer = this.nextPlayer();
         }
         this.state = "start";
     }

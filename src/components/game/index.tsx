@@ -3,9 +3,10 @@ import monopoly from '../../game/monopoly';
 import MonopolyDisplay from './monopoly';
 import { Player } from '../../game/players';
 import { GameWrapper, SidebarWrapper, RollWrapper, DieWrapper, MiddleWrapper, 
-         TitleText, BoardWrapper, RightWrapper, 
+         TitleText, BoardWrapper, RightWrapper,
          SideInfoBox, SideInfo, SideInfoText, SideInfoBoxLine } from './game';
 import { SideInfoCardGetter } from './cards';
+import { House } from './pieces';
 import Dice1 from '../../images/Dice1.png';
 import Dice2 from '../../images/Dice2.png';
 import Dice3 from '../../images/Dice3.png';
@@ -77,7 +78,12 @@ function displayBoard() {
     <>
     <MiddleWrapper>
       <TitleText>JOELOPOLY</TitleText>
+      <div className="container">
+      <>
       <BoardWrapper src={Board} alt="Board"/>
+      <House location={0} houseNum={0}/>
+      </>
+      </div>
     </MiddleWrapper>
     </>
   )
