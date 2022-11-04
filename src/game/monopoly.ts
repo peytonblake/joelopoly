@@ -381,7 +381,7 @@ export class Monopoly {
     }
 
     communityChest() {
-        this.card = communityChestCards[Math.floor(Math.random() * communityChestCards.length)];
+        this.card = communityChestCards[Math.floor(Math.random() * chanceCards.length)];
         this.state = "readCard";
     }
 
@@ -418,6 +418,9 @@ export class Monopoly {
             !this.getCurrentPlayer().alive || this.getCurrentPlayer().inJail) {
             this.doublesRolled = 0;
             this.currentPlayer = (this.currentPlayer + this.turnOrder) % this.players.length;
+            if (this.currentPlayer == -1){
+                this.currentPlayer = this.players.length - 1;
+            }
         }
         // continue until there is an active player
         while (!this.getCurrentPlayer().alive) {
