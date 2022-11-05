@@ -13,9 +13,10 @@ type GameState = "needPlayers" | "rollForFirst" | "start" | "roll" | "inJail" | 
     "buySquare" | "onOwnedSquare" | "cannotAffordSquare" | "paySquareRent" | "boughtSquare" |
     "mortgageRent" | "mortgageTax" | "loseSquareRent" | "loseTax" | "payTax" | 
     "endTurn" | "move" | "firstChoice" | "mortgageFirst" | "buyHouses" |
-    "payCommunityService" | "mortgageCommunityService" | "readCard" |
+    "payCommunityService" | "mortgageCommunityService" | "loseCommunityService" | "readCard" |
     "passedGo" | "tax" | "communityChest" | "chance" | "go" | "justVisiting" |
     "freeParking" | "goToJail" | "failedRollDoublesGetOutOfJail" | 
+    "payFine" | "loseFine" | "mortgageFine" | 
     "richHelpPoor" | "mortgageRichHelpPoor" | "loseRichHelpPoor";
 
 export class Monopoly {
@@ -298,6 +299,8 @@ export class Monopoly {
                 this.firstChoice();
             } else if (this.state == "mortgageRichHelpPoor") {
                 this.state = "richHelpPoor";
+            } else if (this.state == "mortgageFine") {
+                this.state = "payFine";
             }
         }
     }

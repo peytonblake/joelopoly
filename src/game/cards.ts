@@ -66,7 +66,7 @@ const forgotWater = new Card(
     "You forgot your water bottle!",
     "Go back 4 squares",
     () => {
-        monopoly.getCurrentPlayer().location = (monopoly.getCurrentPlayer().location - 4) % monopoly.board.length;
+        monopoly.getCurrentPlayer().location = (monopoly.getCurrentPlayer().location - 4 + monopoly.board.length) % monopoly.board.length;
         monopoly.state = "square";
     }
 )
@@ -93,11 +93,11 @@ const littering = new Card(
         const fine = 30;
         monopoly.getCurrentPlayer().amountOwed = fine;
         if (monopoly.getCurrentPlayer().money >= fine) {
-            monopoly.state = "payTax";
+            monopoly.state = "payFine";
         } else if (monopoly.getCurrentPlayer().assets() < fine) {
-            monopoly.state = "loseTax";
+            monopoly.state = "loseFine";
         } else {
-            monopoly.state = "mortgageTax";
+            monopoly.state = "mortgageFine";
         }
     }
 )
@@ -142,7 +142,7 @@ const communityService = new Card(
         if (monopoly.getCurrentPlayer().money >= totalPayout) {
             monopoly.state = "payCommunityService";
         } else if (totalPayout > monopoly.getCurrentPlayer().assets()) {
-            monopoly.state = "loseTax";
+            monopoly.state = "loseCommunityService";
         } else {
             monopoly.state = "mortgageCommunityService";
         }

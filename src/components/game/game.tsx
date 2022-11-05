@@ -17,9 +17,16 @@ interface color {
   color: string;
 }
 
-interface position {
+interface buildingPosition {
   left: number;
-  bottom: number;
+  top: number;
+  rotate: number;
+}
+
+interface playerName {
+  left: number;
+  top: number;
+  color: string;
 }
 
 export const Button = styled(Link)`
@@ -89,405 +96,6 @@ export const SideInfoText = styled.h1<color>`
   font-size: 2rem;
 `;
 
-export const Zero = styled.h1`
-  
-  color: white;
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 590px;
-`;
-
-export const One = styled.h1`
-  
-  color: white;
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 655px;
-`;
-
-export const Two = styled.h1`
-  
-  color: white;
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 720px;
-`;
-
-export const Three = styled.h1`
-  
-  color: white;
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 785px;
-`;
-
-export const Four = styled.h1`
-  
-  color: white;
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 850px;
-`;
-
-export const Five = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 915px;
-  color: white;
-`;
-
-export const Six = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 980px;
-  color: white;
-`;
-
-export const Seven = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 1045px;
-  color: white;
-`;
-
-export const Eight = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 1110px;
-  color: white;
-`;
-
-export const Nine = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 1160px;
-  color: white;
-`;
-
-export const Ten = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 30px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Eleven = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 90px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Twelve = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 150px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Thirteen = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 210px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Fourteen = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 270px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Fifteen = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 330px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Sixteen = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 390px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Seventeen = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 450px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Eighteen = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 510px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Nineteen = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 570px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Twentie = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 1240px;
-  color: white;
-`;
-
-export const Twentieone = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 1180px;
-  color: white;
-`;
-
-export const Twentietwo = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 1100px;
-  color: white;
-`;
-
-export const Twentiethree = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 1040px;
-  color: white;
-`;
-
-export const Twentiefour = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 980px;
-  color: white;
-`;
-
-export const Twentiefive = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 920px;
-  color: white;
-`;
-
-export const Twentiesix = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 860px;
-  color: white;
-`;
-
-export const Twentieseven = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 800px;
-  color: white;
-`;
-
-export const Twentieeight = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 740px;
-  color: white;
-`;
-
-export const Twentienine = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 680px;
-  color: white;
-`;
-
-export const Thirtie = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 630px;
-  right: 600px;
-  color: white;
-`;
-
-export const Thirtieone = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 570px;
-  right: 600px;
-  color: white;
-`;
-
-export const Thirtietwo = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 510px;
-  right: 600px;
-  color: white;
-`;
-
-export const Thirtiethree = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 450px;
-  right: 600px;
-  color: white;
-`;
-
-export const Thirtiefour = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 390px;
-  right: 600px;
-  color: white;
-`;
-
-export const Thirtiefive = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 330px;
-  right: 600px;
-  color: white;
-`;
-
-export const Thirtiesix = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 270px;
-  right: 600px;
-  color: white;
-`;
-
-export const Thirtieseven = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 210px;
-  right: 600px;
-  color: white;
-`;
-
-export const Thirtieeight = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 150px;
-  right: 600px;
-  color: white;
-`;
-
-export const Thirtienine = styled.h1`
-  
-  
-  font-size: 2rem;
-  position: absolute;
-  bottom: 90px;
-  right: 600px;
-  color: white;
-`;
-
-
-
-
-
 export const RollWrapper = styled.div`
   border-radius: 30px;
   background: #ba8c4e;
@@ -526,6 +134,11 @@ export const BoardWrapper = styled.img`
   height: 75vh;
   width: 75vh;
 `;
+
+export const PiecesWrapper = styled.div`
+  height: 75vh;
+  width: 75vh;
+`
 
 export const RightWrapper = styled.div`
   color: #2c3325;
@@ -576,13 +189,27 @@ export const CardPlaceholder = styled.div`
   max-width: 191px;
 `;
 
-export const HouseContainer = styled.div<position>`
-  position: relative;
-  left: ${({left}) => left}%;
-  bottom: ${({bottom}) => bottom}%
+export const PieceContainer = styled.div`
+  position: absolute;
+  width:75vh;
+  height:75vh;
+  bottom: 0;
 `;
 
-export const HouseWrapper = styled.img`
-  max-height: 1.5vh;
-  max-width: 1.5vh
+export const BuildingWrapper = styled.img<buildingPosition>`
+  position: relative;
+  left: ${({left}) => left}%;
+  bottom: ${({top}) => -top}%;
+  transform: rotate(${({rotate}) => rotate}deg);
+  max-height: 1.25vh;
+  max-width: 1.25vh
+`;
+
+export const NamePieceWrapper = styled.div<playerName>`
+  max-height: 1.25vh;
+  max-width: 9vh;
+  position: relative;
+  left: ${({left}) => left}%;
+  bottom: ${({top}) => -top}%;
+  color: ${({color}) => color};
 `;
