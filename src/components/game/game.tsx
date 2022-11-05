@@ -84,399 +84,653 @@ export const SideInfoText = styled.h1<color>`
   font-size: 2rem;
 `;
 
-export const Zero = styled.h1`
+export const Zero = styled.h1<color>`
   
-  color: white;
+  color: ${({color}) => color};
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 590px;
 `;
 
-export const One = styled.h1`
+export const Z0 = styled.h1`
   
-  color: white;
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 30px;
+  right: 610px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z = styled.h1`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 30px;
+  right: 685px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z2 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 30px;
+  right: 810px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z3 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 30px;
+  right: 990px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z4 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 30px;
+  right: 1110px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z5 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 30px;
+  right: 1170px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z6 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 90px;
+  right: 1220px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z7 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 210px;
+  right: 1220px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z8 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 270px;
+  right: 1220px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z9 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 395px;
+  right: 1220px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z10 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 515px;
+  right: 1220px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z11 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 575px;
+  right: 1220px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z12 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 630px;
+  right: 1145px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z13 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 630px;
+  right: 1020px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z14 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 630px;
+  right: 960px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z15 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 630px;
+  right: 840px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z16 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 630px;
+  right: 780px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z17 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 630px;
+  right: 660px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z18 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 575px;
+  right: 610px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z19 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 510px;
+  right: 610px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z20 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 390px;
+  right: 610px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z21 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 210px;
+  right: 610px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+export const Z22 = styled.h1<color>`
+  
+  color: ${({color}) => color};
+  font-size: 2rem;
+  position: absolute;
+  bottom: 90px;
+  right: 610px;
+  height: 5vh;
+  width: 5vh;
+`;
+
+
+
+export const One = styled.h1<color>`
+  
+  color: ${({color}) => color};
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 655px;
 `;
 
-export const Two = styled.h1`
-  
-  color: white;
+export const Two = styled.h1<color>`
+  color: ${({color}) => color};
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 720px;
 `;
 
-export const Three = styled.h1`
+export const Three = styled.h1<color>`
   
-  color: white;
+  color: ${({color}) => color};
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 785px;
 `;
 
-export const Four = styled.h1`
+export const Four = styled.h1<color>`
   
-  color: white;
+  color: ${({color}) => color};
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 850px;
 `;
 
-export const Five = styled.h1`
+export const Five = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 915px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Six = styled.h1`
+export const Six = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 980px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Seven = styled.h1`
+export const Seven = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 1045px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Eight = styled.h1`
+export const Eight = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 1110px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Nine = styled.h1`
+export const Nine = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 1160px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Ten = styled.h1`
+export const Ten = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 30px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Eleven = styled.h1`
+export const Eleven = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 90px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twelve = styled.h1`
+export const Twelve = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 150px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirteen = styled.h1`
+export const Thirteen = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 210px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Fourteen = styled.h1`
+export const Fourteen = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 270px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Fifteen = styled.h1`
+export const Fifteen = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 330px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Sixteen = styled.h1`
+export const Sixteen = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 390px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Seventeen = styled.h1`
+export const Seventeen = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 450px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Eighteen = styled.h1`
+export const Eighteen = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 510px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Nineteen = styled.h1`
+export const Nineteen = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 570px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twentie = styled.h1`
+export const Twentie = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 1240px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twentieone = styled.h1`
+export const Twentieone = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 1180px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twentietwo = styled.h1`
+export const Twentietwo = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 1100px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twentiethree = styled.h1`
+export const Twentiethree = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 1040px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twentiefour = styled.h1`
+export const Twentiefour = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 980px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twentiefive = styled.h1`
+export const Twentiefive = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 920px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twentiesix = styled.h1`
+export const Twentiesix = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 860px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twentieseven = styled.h1`
+export const Twentieseven = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 800px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twentieeight = styled.h1`
+export const Twentieeight = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 740px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Twentienine = styled.h1`
+export const Twentienine = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 680px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirtie = styled.h1`
+export const Thirtie = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 630px;
   right: 600px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirtieone = styled.h1`
+export const Thirtieone = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 570px;
   right: 600px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirtietwo = styled.h1`
+export const Thirtietwo = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 510px;
   right: 600px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirtiethree = styled.h1`
+export const Thirtiethree = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 450px;
   right: 600px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirtiefour = styled.h1`
+export const Thirtiefour = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 390px;
   right: 600px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirtiefive = styled.h1`
+export const Thirtiefive = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 330px;
   right: 600px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirtiesix = styled.h1`
+export const Thirtiesix = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 270px;
   right: 600px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirtieseven = styled.h1`
+export const Thirtieseven = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 210px;
   right: 600px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirtieeight = styled.h1`
+export const Thirtieeight = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 150px;
   right: 600px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
-export const Thirtienine = styled.h1`
+export const Thirtienine = styled.h1<color>`
   
   
   font-size: 2rem;
   position: absolute;
   bottom: 90px;
   right: 600px;
-  color: white;
+  color: ${({color}) => color};
 `;
 
 
