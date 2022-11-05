@@ -17,6 +17,11 @@ interface color {
   color: string;
 }
 
+interface position {
+  left: number;
+  bottom: number;
+}
+
 export const Button = styled(Link)`
   border-radius: 30px;
   background: #ba8c4e;
@@ -566,4 +571,15 @@ export const CardPlaceholder = styled.div`
   max-height: 445px;
   width: 100vh;
   max-width: 191px;
+`;
+
+export const HouseContainer = styled.div<position>`
+  position: relative;
+  left: ${({left}) => left}%;
+  bottom: ${({bottom}) => bottom}%
+`;
+
+export const HouseWrapper = styled.img`
+  max-height: 1.5vh;
+  max-width: 1.5vh
 `;

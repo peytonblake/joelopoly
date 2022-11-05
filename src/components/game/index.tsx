@@ -6,6 +6,7 @@ import { GameWrapper, SidebarWrapper, RollWrapper, DieWrapper, MiddleWrapper,
          TitleText, BoardWrapper, RightWrapper, 
          SideInfoBox, SideInfo, SideInfoText, SideInfoBoxLine, Zero, One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Eleven, Twelve, Thirteen, Fourteen, Fifteen, Sixteen, Seventeen, Eighteen, Nineteen, Twentie, Twentieone, Twentietwo, Twentiethree, Twentiefour, Twentiefive, Twentiesix, Twentieseven, Twentieeight, Twentienine, Thirtie, Thirtieone, Thirtietwo, Thirtiethree, Thirtiefour, Thirtiefive, Thirtiesix, Thirtieseven, Thirtieeight, Thirtienine } from './game';
 import { SideInfoCardGetter } from './cards';
+import { House } from './pieces';
 import Dice1 from '../../images/Dice1.png';
 import Dice2 from '../../images/Dice2.png';
 import Dice3 from '../../images/Dice3.png';
@@ -143,13 +144,15 @@ function displayBoard() {
     <>
     <MiddleWrapper>
       <TitleText>JOELOPOLY</TitleText>
-      
+      <div className="container">
       <BoardWrapper src={Board} alt="Board"/>
+      <House left={38} bottom={14}/>
+      <House left={40} bottom={14}/>
+      </div>
       {displayPieces(monopoly.players[0].location, monopoly.players[0].name)}
       {displayPieces(monopoly.players[1].location, monopoly.players[1].name)}
       {checkFor3(monopoly.players.length)}
       {checkFor4()}
-      
     </MiddleWrapper>
     </>
   )
