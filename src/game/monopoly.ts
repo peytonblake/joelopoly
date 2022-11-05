@@ -7,6 +7,7 @@ import utilities, { Utility } from './utilities';
 import transportations, { Transportation } from './transportations';
 import { Card, chanceCards, communityChestCards } from './cards';
 import { SPEEDING_DOUBLES, JAIL_PRICE, COMMUNITY_SERVICE_PAYMENT, PLAYER_COLORS, RICH_HELP_POOR_AMOUNT } from './constants';
+import { threadId } from 'worker_threads';
 
 type GameState = "needPlayers" | "rollForFirst" | "start" | "roll" | "inJail" | "won" | "speeding" | "square" | "ownedSquare" | 
     "buySquare" | "onOwnedSquare" | "cannotAffordSquare" | "paySquareRent" | "boughtSquare" |
@@ -412,19 +413,25 @@ export class Monopoly {
         this.state = "endTurn";
     }
 
+    nextPlayer() {
+        let next = (this.currentPlayer + this.turnOrder) % this.players.length;
+        if (next == -1) {
+            next = this.players.length - 1;
+        }
+        return next;
+    }
+
     endTurn() {
         // if it should be the next player's turn
         if (this.doublesRolled == 0 || this.doublesRolled == SPEEDING_DOUBLES ||
             !this.getCurrentPlayer().alive || this.getCurrentPlayer().inJail) {
             this.doublesRolled = 0;
-            this.currentPlayer = (this.currentPlayer + this.turnOrder) % this.players.length;
-            if (this.currentPlayer == -1){
-                this.currentPlayer = this.players.length - 1;
-            }
+            this.currentPlayer = this.nextPlayer();
         }
         // continue until there is an active player
         while (!this.getCurrentPlayer().alive) {
-            this.currentPlayer = (this.currentPlayer + this.turnOrder) % this.players.length;
+            this.doublesRolled = 0;
+            this.currentPlayer = this.nextPlayer();
         }
         this.state = "start";
     }
