@@ -4,8 +4,10 @@ import p5Types from 'p5';
 import { Player } from './Player';
 import { Obstacle } from './Obstacle';
 import { Bird } from './Bird';
-import monopoly from '../../game/monopoly';
+import { Link } from "react-router-dom";
 import { Button, ButtonWrapper } from './Button';
+import { Cloud } from './Clouds';
+import monopoly from '../../game/monopoly';
 
 const DinoGame: React.FC = () => {
   let player: Player;
@@ -35,6 +37,9 @@ const DinoGame: React.FC = () => {
   let rnum: number;
   let max_num: number;
   let min_num: number;
+  let cloud_image: any;
+  let cloud_release_times: number[];
+  let clouds: Cloud[];
 
   function keyPressed(p5: p5Types) {
     if (p5.key == " " && game_state == 1) {
@@ -155,6 +160,8 @@ const DinoGame: React.FC = () => {
     game_clock = 0;
     obstacles = [];
     birds = []; 
+    cloud_release_times = [];
+    clouds = []
     game_state = 0;
     game_length = 1800;
     game_over = 0;
@@ -162,6 +169,7 @@ const DinoGame: React.FC = () => {
     player_image = p5.loadImage("/DinoGameImages/running_sprite.png");
     bird_image = p5.loadImage("/DinoGameImages/bird.png");
     object_image = p5.loadImage("/DinoGameImages/obstacle.webp");
+    cloud_image = p5.loadImage("/DinoGameImages/cloud.png")
 
     obstacle_release_times = [10];
     bird_release_times = [85];
@@ -180,6 +188,13 @@ const DinoGame: React.FC = () => {
           }
         }
       }
+
+    for(let i = 0; i < 1800; i++) {
+      if(Math.random() > .98) {
+        cloud_release_times.push(i);
+        i+=15;
+      }
+    }
 
     //start screen texts
     p5.background('#2c3325');
@@ -237,7 +252,14 @@ const DinoGame: React.FC = () => {
     if (game_state == 1) {
       p5.removeElements();
       p5.background('#2c3325');
+      p5.fill('#5C4033')
+      p5.rect(0,p5.height-50,p5.width,50)
+      p5.fill('#ADD8E6')
+      p5.rect(0,0,p5.width,p5.height-50)
       //p5.image(player_image, 0, 0);
+      if (cloud_release_times.includes(game_clock)) {
+        clouds.push(new Cloud(p5))
+      }
       if (obstacle_release_times.includes(game_clock)) {
         obstacles.push(new Obstacle(p5));
       }
@@ -245,6 +267,10 @@ const DinoGame: React.FC = () => {
           birds.push(new Bird(p5));
       }
 
+      for (let c of clouds) {
+        c.move()
+        c.show(p5, cloud_image)
+      }
       for (let o of obstacles) {
           o.move();
           o.show(p5, object_image);
@@ -309,7 +335,7 @@ const DinoGame: React.FC = () => {
   return (
   <>
   <ButtonWrapper>
-      <Button to={"/game"} onClick={() => monopoly.manageMiniGameReward()}>Click Anywhere To Return To Game</Button>
+  <Button to={"/game"} onClick={() => monopoly.manageMiniGameReward()}>Click Anywhere To Return To Game</Button>
   </ButtonWrapper>
   <Sketch setup={setup} draw={draw} keyPressed={keyPressed} />
   </>);

@@ -2,8 +2,9 @@ import React from 'react';
 import Sketch from 'react-p5';
 import p5Types from 'p5';
 import { Mole } from './Mole';
-import monopoly from '../../game/monopoly';
+import { isConstructSignatureDeclaration } from 'typescript';
 import { Button, ButtonWrapper } from './Button';
+import monopoly from '../../game/monopoly';
 
 const WhackAMole: React.FC = () => {
 
@@ -137,7 +138,7 @@ const WhackAMole: React.FC = () => {
     for (var i = 0; i < moles.length; i++) {
       if(!(
         ((p5.mouseY + 65) < (moles[i].y)) ||
-        (p5.mouseY + 65 > (moles[i].y + moles[i].h)) ||
+        (p5.mouseY + 65 > (moles[i].y + moles[i].h + 40)) ||
         ((p5.mouseX - 110) < moles[i].x) ||
         (p5.mouseX - 110 > (moles[i].x + moles[i].w))
       )) {
@@ -292,7 +293,7 @@ const WhackAMole: React.FC = () => {
   return (
     <>
     <ButtonWrapper>
-        <Button to={"/game"} onClick={() => monopoly.manageMiniGameReward()}>Click Anywhere To Return To Game</Button>
+    <Button to={"/game"} onClick={() => monopoly.manageMiniGameReward()}>Click Anywhere To Return To Game</Button>
     </ButtonWrapper>
     <Sketch setup={setup} draw={draw} mousePressed={mousePressed} keyPressed={keyPressed} />
     </>

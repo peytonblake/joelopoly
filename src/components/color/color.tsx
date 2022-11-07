@@ -5,6 +5,16 @@ interface ButtonI {
   color: string
 };
 
+export const NameBox = styled.input`
+  background-color: #AAAAAA;
+  color: #fef9f3;
+  display: block;
+  margin : 0 auto;
+  height: 50px;
+  width: 350px;
+  font-size: 2rem;
+`;
+
 export const ColorContainer = styled.div`
   background: #2c3325;
   height: 100vh;
@@ -16,14 +26,14 @@ export const ColorContainer = styled.div`
 
 export const PlayerNameContainer = styled.div`
   justify-content: center;
-  margin-bottom: 10vh;
+  margin-bottom: 4vh;
 `;
 
 export const PlayerName = styled.h1`
   color: #fef9f3;
   font-weight: bold;
   line-height: 10px;
-  font-size: 8rem;
+  font-size: 3rem;
 `;
 
 export const ButtonWrapper = styled.div`
