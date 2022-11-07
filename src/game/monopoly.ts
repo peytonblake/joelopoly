@@ -385,7 +385,7 @@ export class Monopoly {
     }
 
     communityChest() {
-        this.card = communityChestCards[Math.floor(Math.random() * chanceCards.length)];
+        this.card = communityChestCards[Math.floor(Math.random() * communityChestCards.length)];
         this.state = "readCard";
     }
 
