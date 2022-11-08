@@ -108,6 +108,16 @@ export class Player {
         }
         return withHouses;
     }
+
+    propertyWithGreatestHouses() {
+        let p = this.properties[0];
+        for (const property of this.properties) {
+            if (property.houses > p.houses) {
+                p = property;
+            }
+        }
+        return p;
+    }
 }
 
 let playerColors = [...PLAYER_COLORS];

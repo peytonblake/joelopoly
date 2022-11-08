@@ -26,10 +26,11 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
     const [gameState, setGameState] = useState(monopoly.getState());
     const [die1, setDie1] = useState(monopoly.die1);
     const [die2, setDie2] = useState(monopoly.die2);
+    const [redraw, setRedraw] = useState(false);
 
     useEffect(() => {
         props.redraw();
-    }, [gameState])
+    }, [gameState, redraw])
 
     const ai = monopoly.getCurrentPlayer().ai;
     const name = monopoly.getCurrentPlayer().name;
@@ -43,6 +44,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
             setGameState(monopoly.getState());
             setDie1(monopoly.die1);
             setDie2(monopoly.die2);
+            setRedraw(!redraw);
         }
     }
 
@@ -77,7 +79,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
                         )
                     }
                 }
-                const property = player.properties[0];
+                const property = player.propertyWithGreatestHouses();
                 return (
                     <>
                     <MessageText>{player.name} will sell a house on {squareName(property)}</MessageText>
