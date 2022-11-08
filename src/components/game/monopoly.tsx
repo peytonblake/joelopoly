@@ -66,7 +66,7 @@ export default function MonopolyDisplay(props: {redraw: Function}) {
                     </>
                 )
             } else {
-                const propsWithHouses = player.propertiesCanBuyHousesFor();
+                const propsWithHouses = player.propertiesWithHouses();
                 for (const property of player.properties) {
                     if (!propsWithHouses.includes(property)) {
                         return (

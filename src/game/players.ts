@@ -98,6 +98,16 @@ export class Player {
         }
         return canBuyProperties;
     }
+
+    propertiesWithHouses() {
+        const withHouses: Property[] = [];
+        for (const property of this.properties) {
+            if (property.houses > 0) {
+                withHouses.push(property);
+            }
+        }
+        return withHouses;
+    }
 }
 
 let playerColors = [...PLAYER_COLORS];
