@@ -63,6 +63,11 @@ export class Property {
         }
         return true;
     }
+
+    reset() {
+        this.ownedBy = null;
+        this.houses = 0;
+    }
 }
 
 function loadProperties() {

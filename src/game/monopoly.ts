@@ -59,6 +59,9 @@ export class Monopoly {
         this.die2 = 1;
         this.turnOrder = 1;
         this.card = null;
+        for (const property of properties) {
+            property.reset();
+        }
     }
 
     setUpPlayers(playerInits: PlayerInit[], numAIPlayers: number) {
